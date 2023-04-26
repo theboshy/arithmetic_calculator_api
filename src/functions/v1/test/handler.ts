@@ -3,17 +3,25 @@ import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 
 import schema from '../../../common/v1/schemas/schema';
-import { mysql } from 'src/common/database';
+import { mysql } from 'src/common/database/database';
 
 const test: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
-  let results = await mysql.query('SELECT * FROM test')
-  await mysql.end()
+  let results = {}
+  let errorHandler = {};
+  //console.log(process.env.IS_OFFLINE)
+  try {
+    results = await mysql.query('SELECT * FROM test')
+    await mysql.end() 
+  } catch (error) {
+    errorHandler = error
+  }
 
   return formatJSONResponse({
     message: `Hello ${event.body.name}, welcome to the exciting Serverless world!`,
     //event,
-    dbResult: results
+    error: errorHandler ? errorHandler : null,
+    dbResult: results ? results : null
   });
 };
 

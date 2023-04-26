@@ -1,11 +1,17 @@
 import type { AWS } from '@serverless/typescript';
 
 import { test } from '@functions/v1/test';
+import { configDotEnv } from 'dotenv.config'
+
+(async () => {
+  await configDotEnv();
+})()
 
 const serverlessConfiguration: AWS = {
+  useDotenv: true,
   service: 'aws-serverless-typescript-api',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline'],
+  plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
