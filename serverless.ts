@@ -11,7 +11,7 @@ const serverlessConfiguration: AWS = {
   useDotenv: true,
   service: 'aws-serverless-typescript-api',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dotenv-plugin'],
+  plugins: ['serverless-esbuild', 'serverless-offline', 'serverless-dotenv-plugin', 'serverless-dynamodb-local'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -23,11 +23,97 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
+    iam: {
+      role: {
+        statements: [{
+          Effect: "Allow",
+          Action: [
+            "dynamodb:DescribeTable",
+            "dynamodb:Query",
+            "dynamodb:Scan",
+            "dynamodb:GetItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "dynamodb:DeleteItem",
+          ],
+          Resource: "arn:aws:dynamodb:us-west-2:*:table/arithmeticdb",
+        }],
+      },
+    },
+  },
+  resources: {
+    Resources: {
+      User: {
+        Type: "AWS::DynamoDB::Table",
+        Properties: {
+          TableName: "User",
+          AttributeDefinitions: [{
+            AttributeName: "id",
+            AttributeType: "S",
+          }],
+          KeySchema: [{
+            AttributeName: "id",
+            KeyType: "HASH"
+          }],
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+          },
+
+        }
+      },
+      Operation: {
+        Type: "AWS::DynamoDB::Table",
+        Properties: {
+          TableName: "Operation",
+          AttributeDefinitions: [{
+            AttributeName: "id",
+            AttributeType: "S",
+          }],
+          KeySchema: [{
+            AttributeName: "id",
+            KeyType: "HASH"
+          }],
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+          },
+
+        }
+      },
+      Record: {
+        Type: "AWS::DynamoDB::Table",
+        Properties: {
+          TableName: "Record",
+          AttributeDefinitions: [{
+            AttributeName: "id",
+            AttributeType: "S",
+          }],
+          KeySchema: [{
+            AttributeName: "id",
+            KeyType: "HASH"
+          }],
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+          },
+
+        }
+      }
+    }
   },
   // import the function via paths
   functions: { test },
   package: { individually: true },
   custom: {
+    dynamodb:{
+      start:{
+        port: 5000,
+        inMemory: true,
+        migrate: true,
+      },
+      stages: "dev"
+    },
     esbuild: {
       bundle: true,
       minify: false,

@@ -3,7 +3,7 @@ import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 
 import schema from '../../../common/v1/schemas/schema';
-import { mysql } from 'src/common/database/database';
+import { MysqlInstance } from 'src/common/database/mysql.db';
 
 const test: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
@@ -11,8 +11,8 @@ const test: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, co
   let errorHandler = {};
   //console.log(process.env.IS_OFFLINE)
   try {
-    results = await mysql.query('SELECT * FROM test1')
-    await mysql.end() 
+    results = await MysqlInstance.getInstance().query('SELECT * FROM test1')
+    await MysqlInstance.getInstance().end() 
   } catch (error) {
     errorHandler = error
   }
