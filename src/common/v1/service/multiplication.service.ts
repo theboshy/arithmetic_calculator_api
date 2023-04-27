@@ -4,7 +4,7 @@ import { arithmeticOperationResolver } from "../../../libs/operator.resolver/ope
 export const additionService = (numberA: number, numberB: number): InternalResponse => {
     let internalResponse: InternalResponse = new InternalResponse;
     try {
-        internalResponse.response = arithmeticOperationResolver(numberA, numberB, "suma");
+        internalResponse.response = arithmeticOperationResolver(numberA, numberB, "multiplication");
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;

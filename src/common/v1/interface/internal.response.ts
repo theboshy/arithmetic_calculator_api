@@ -1,5 +1,5 @@
-export interface InternalResponse {
-    error: boolean;
-    errorTrace: string;
+export interface InternalResponseInterface {
+    error?: boolean;
+    errorTrace?: string;
     response: any;
 }

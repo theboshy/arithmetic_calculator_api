@@ -1,5 +1,5 @@
 import { handlerPath } from '@libs/handler-resolver';
-import { additionSchema } from 'src/common/v1/schemas/addition.schema';
+import { additionSchema } from 'src/common/v1/schemas/arithmetic.operation.schema';
 
 export const addition = {
   handler: `${handlerPath(__dirname)}/handler.additionHandler`,

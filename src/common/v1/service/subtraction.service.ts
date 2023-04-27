@@ -1,10 +1,10 @@
 import { InternalResponse } from "../model/internal.response";
 import { arithmeticOperationResolver } from "../../../libs/operator.resolver/operator.service";
 
-export const additionService = (numberA: number, numberB: number): InternalResponse => {
+export const subtractionService = (numberA: number, numberB: number): InternalResponse => {
     let internalResponse: InternalResponse = new InternalResponse;
     try {
-        internalResponse.response = arithmeticOperationResolver(numberA, numberB, "suma");
+        internalResponse.response = internalResponse.response = arithmeticOperationResolver(numberA, numberB, "subtraction");
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;

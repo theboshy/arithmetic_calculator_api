@@ -1,34 +1,25 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
-import { formatJSONResponse } from '@libs/api-gateway';
+import { ValidatedEventAPIGatewayProxyEvent, formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { additionSchema } from '../../../common/v1/schemas/addition.schema';
-import { LambdaResponse } from 'src/common/v1/interface/lambda.response';
-import { addition_service } from 'src/common/v1/service/addition.service';
+import { additionService } from 'src/common/v1/service/addition.service';
+import { InternalResponse } from 'src/common/v1/model/internal.response';
+import { queryParamMiddleware } from '@libs/custom.midlewares/query.validator.operator';
+import { additionSchema } from 'src/common/v1/schemas/arithmetic.operation.schema';
 
-const addition: ValidatedEventAPIGatewayProxyEvent<typeof additionSchema> = async (event, context, callback) => {
+const addition: ValidatedEventAPIGatewayProxyEvent<typeof additionSchema> = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
   //--
-  let lambdaResponse: LambdaResponse = {
-    statusCode: 503,
-    body: {}
-  };
+  let internalResponse: InternalResponse = new InternalResponse;
+  let status = 503;
   try {
-    const {number_a, number_b} = event.body; 
-    const internalResponse = addition_service(number_a, number_b);
+    const {numberA, numberB} = event.queryStringParameters;
+    internalResponse = additionService(parseInt(numberA), parseInt(numberB));
     if (!internalResponse.error) {
-      lambdaResponse.statusCode = 200;
+      status = 200;
     }
-    lambdaResponse.body.input = event.body;
-    lambdaResponse.body.response = internalResponse.response;
   } catch (error) {
-    //log errors 
-    lambdaResponse.body.error = error.toString();
+    internalResponse.errorTrace = error;
   }
-  callback(null, lambdaResponse);
-  return formatJSONResponse({
-    lambdaResponse,
-    event
-  });
+  return formatJSONResponse(status, {...internalResponse});
 };
 
-export const additionHandler = middyfy(addition);
+export const additionHandler = middyfy(addition).use(queryParamMiddleware(additionSchema))

@@ -17,7 +17,7 @@ const test: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, co
     errorHandler = error
   }
 
-  return formatJSONResponse({
+  return formatJSONResponse(200, {
     message: `Hello ${event.body.name}, welcome to the exciting Serverless world!`,
     //event,
     error: errorHandler ? errorHandler : null,
