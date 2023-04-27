@@ -4,7 +4,7 @@ export const additionSchema = {
         numberA: { type: 'string' },
         numberB: { type: 'string' },
     },
-    require: ["numberA", "numberB"]
+    required: ["numberA", "numberB"]
 };
 
 export const twoNumberValidator = {

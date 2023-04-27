@@ -1,5 +1,5 @@
 import { InternalResponse } from "../model/internal.response";
-import { arithmeticOperationResolver } from "../../../libs/operator.resolver/operator.service";
+import { arithmeticOperationResolver } from "../../../libs/operator.resolver/arithmetic.operator.resolver";
 
 export const subtractionService = (numberA: number, numberB: number): InternalResponse => {
     let internalResponse: InternalResponse = new InternalResponse;
