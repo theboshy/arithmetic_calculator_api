@@ -1,16 +1,16 @@
 import { handlerPath } from '@libs/handler-resolver';
-import schema from '../../../common/v1/schemas/schema';
+import { additionSchema } from 'src/common/v1/schemas/addition.schema';
 
-export const test = {
-  handler: `${handlerPath(__dirname)}/handler.testHandler`,
+export const addition = {
+  handler: `${handlerPath(__dirname)}/handler.additionHandler`,
   events: [
     {
       http: {
-        method: 'post',
-        path: 'v1/test',
+        method: 'get',
+        path: 'v1/addition',
         request: {
           schemas: {
-            'application/json': schema,
+            'application/json': additionSchema,
           },
         },
       },

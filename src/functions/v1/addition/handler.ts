@@ -2,26 +2,32 @@ import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 import { additionSchema } from '../../../common/v1/schemas/addition.schema';
-import { Response } from 'src/common/v1/model/lambda.response';
+import { LambdaResponse } from 'src/common/v1/interface/lambda.response';
+import { addition_service } from 'src/common/v1/service/addition.service';
 
 const addition: ValidatedEventAPIGatewayProxyEvent<typeof additionSchema> = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false
-  let result :number = undefined;
-  let response: Response;
+  //--
+  let lambdaResponse: LambdaResponse = {
+    statusCode: 503,
+    body: {}
+  };
   try {
     const {number_a, number_b} = event.body; 
-    result = number_a + number_b;
-    response.input = event.body;
-    response.status = 200;
-    response.response = `addition result: ${result}`;
+    const internalResponse = addition_service(number_a, number_b);
+    if (!internalResponse.error) {
+      lambdaResponse.statusCode = 200;
+    }
+    lambdaResponse.body.input = event.body;
+    lambdaResponse.body.response = internalResponse.response;
   } catch (error) {
     //log errors 
-    response.error = error.toString();
+    lambdaResponse.body.error = error.toString();
   }
-  callback(null, apiGateWayResponse);
+  callback(null, lambdaResponse);
   return formatJSONResponse({
-    message: `Operation completed successfully`,
-    status: 200
+    lambdaResponse,
+    event
   });
 };
 
