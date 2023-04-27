@@ -1,4 +1,4 @@
-export interface Record {
+export interface RecordInterface {
     id: string;
     operation_id: string;
     user_id: string;

@@ -1,4 +1,4 @@
-export interface Operation {
+export interface OperationInterface {
     id: string;
     type: string;
     cost: number;
