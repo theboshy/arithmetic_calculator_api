@@ -1,11 +1,10 @@
-import { ValidatedEventAPIGatewayProxyEvent, formatJSONResponse } from '@libs/api-gateway';
+import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { queryParamMiddleware } from '@libs/custom.midlewares/query.validator.operator';
-import { requestValidationSchema } from 'src/common/v1/schemas/arithmetic.operation.schema';
 import { subtractionService } from 'src/common/v1/service/subtraction.service';
 
-const subtraction: ValidatedEventAPIGatewayProxyEvent<typeof requestValidationSchema> = async (event, context) => {
+const subtraction = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
   //--
   let internalResponse: InternalResponse = new InternalResponse;
@@ -22,4 +21,4 @@ const subtraction: ValidatedEventAPIGatewayProxyEvent<typeof requestValidationSc
   return formatJSONResponse(status, {...internalResponse});
 };
 
-export const subtractionHandler = middyfy(subtraction).use(queryParamMiddleware(requestValidationSchema))
+export const subtractionHandler = middyfy(subtraction).use(queryParamMiddleware())
