@@ -1,1 +1,1 @@
-export { test, addition } from './v1';
+export { test, addition, subtraction, division, multiplication, squareRoot } from './v1';

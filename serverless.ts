@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import { test, addition, subtraction } from '@functions/v1';
+import { test, addition, subtraction, division, multiplication, squareRoot } from '@functions/v1';
 import { configDotEnv } from 'dotenv.config'
 
 (async () => {
@@ -103,7 +103,7 @@ const serverlessConfiguration: AWS = {
     }
   },
   // import the function via paths
-  functions: { test, addition, subtraction },
+  functions: { test, addition, subtraction, division, multiplication, squareRoot },
   package: { individually: true },
   custom: {
     dynamodb:{

@@ -54,3 +54,54 @@ export const subtraction = {
   ],
 };
 
+export const multiplication = {
+  handler: `${handlerPath(__dirname)}/subtraction/handler.multiplicationHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'v1/multiplication',
+        request: {
+          schemas: {
+            'application/json': requestValidationSchema,
+          },
+        },
+      },
+    },
+  ],
+};
+
+export const division = {
+  handler: `${handlerPath(__dirname)}/subtraction/handler.divisionHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'v1/division',
+        request: {
+          schemas: {
+            'application/json': requestValidationSchema,
+          },
+        },
+      },
+    },
+  ],
+};
+
+
+export const squareRoot = {
+  handler: `${handlerPath(__dirname)}/subtraction/handler.squareRootHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'v1/squareRoot',
+        request: {
+          schemas: {
+            'application/json': requestValidationSchema,
+          },
+        },
+      },
+    },
+  ],
+};
