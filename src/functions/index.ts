@@ -1,2 +1,1 @@
-export { test } from './v1/test';
-export { addition} from './v1/addition';
+export { test, addition } from './v1';

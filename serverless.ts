@@ -1,7 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import { test } from '@functions/v1/test';
-import { addition } from '@functions/v1/addition';
+import { test, addition, subtraction } from '@functions/v1';
 import { configDotEnv } from 'dotenv.config'
 
 (async () => {
@@ -87,11 +86,11 @@ const serverlessConfiguration: AWS = {
         Properties: {
           TableName: "Record",
           AttributeDefinitions: [{
-            AttributeName: "id",
+            AttributeName: "date",
             AttributeType: "S",
           }],
           KeySchema: [{
-            AttributeName: "id",
+            AttributeName: "date",
             KeyType: "HASH"
           }],
           ProvisionedThroughput: {
@@ -104,7 +103,7 @@ const serverlessConfiguration: AWS = {
     }
   },
   // import the function via paths
-  functions: { test, addition },
+  functions: { test, addition, subtraction },
   package: { individually: true },
   custom: {
     dynamodb:{

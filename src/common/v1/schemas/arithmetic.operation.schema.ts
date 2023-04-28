@@ -1,4 +1,4 @@
-export const additionSchema = {
+export const requestValidationSchema = {
     type: 'object',
     properties: {
         numberA: { type: 'string' },
