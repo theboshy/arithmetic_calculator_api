@@ -12,7 +12,7 @@ const addition = async (event, context) => {
   let status = 503;
   try {
     const {numberA, numberB} = event.queryStringParameters;
-    internalResponse = additionService(parseInt(numberA), parseInt(numberB));
+    internalResponse = additionService(parseFloat(numberA), parseFloat(numberB));
     if (!internalResponse.error) {
       status = 200;
     }

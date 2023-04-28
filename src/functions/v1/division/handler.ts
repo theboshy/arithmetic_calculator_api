@@ -11,10 +11,7 @@ const division = async (event, context) => {
   let status = 503;
   try {
     const {numberA, numberB} = event.queryStringParameters;
-    if (parseInt(numberB) === 0) {
-      return formatJSONResponse(status, {response: "undefined", errorTrace: "Cannot divide by zero"});
-    }
-    internalResponse = divisionService(parseInt(numberA), parseInt(numberB));
+    internalResponse = divisionService(parseFloat(numberA), parseFloat(numberB));
     if (!internalResponse.error) {
       status = 200;
     }

@@ -11,8 +11,8 @@ const squareRoot = async (event, context) => {
   let internalResponse: InternalResponse = new InternalResponse;
   let status = 503;
   try {
-    const {numberA, numberB} = event.queryStringParameters;
-    internalResponse = squareRootService(parseInt(numberA), parseInt(numberB));
+    const {numberA} = event.queryStringParameters;
+    internalResponse = squareRootService(parseFloat(numberA));
     if (!internalResponse.error) {
       status = 200;
     }

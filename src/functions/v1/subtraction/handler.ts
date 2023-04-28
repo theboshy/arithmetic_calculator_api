@@ -11,7 +11,7 @@ const subtraction = async (event, context) => {
   let status = 503;
   try {
     const {numberA, numberB} = event.queryStringParameters;
-    internalResponse = subtractionService(parseInt(numberA), parseInt(numberB));
+    internalResponse = subtractionService(parseFloat(numberA), parseFloat(numberB));
     if (!internalResponse.error) {
       status = 200;
     }

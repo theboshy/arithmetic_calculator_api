@@ -1,35 +1,41 @@
 import { arithmeticOperationResolver } from "./arithmetic.operator.resolver";
-import createError from 'http-errors';
 
-describe('arithmeticOperationResolver_function', () => {
+describe("arithmeticOperationResolver", () => {
+  it("should add two numbers correctly", () => {
+    const result = arithmeticOperationResolver(5, 3, "addition");
+    expect(result).toEqual({ error: false, response: 8 });
+  });
 
-    // Tests that the function returns the correct result for valid input values for addition operation. 
-    it("test_valid_input_values_addition", () => {
-        expect(arithmeticOperationResolver(2, 3, "addition")).toBe(5);
+  it("should subtract two numbers correctly", () => {
+    const result = arithmeticOperationResolver(5, 3, "subtraction");
+    expect(result).toEqual({ error: false, response: 2 });
+  });
+
+  it("should multiply two numbers correctly", () => {
+    const result = arithmeticOperationResolver(5, 3, "multiplication");
+    expect(result).toEqual({ error: false, response: 15 });
+  });
+
+  it("should divide two numbers correctly", () => {
+    const result = arithmeticOperationResolver(15, 3, "division");
+    expect(result).toEqual({ error: false, response: 5 });
+  });
+
+  it("should calculate the square root of a number correctly", () => {
+    const result = arithmeticOperationResolver(25, undefined, "squareRoot");
+    expect(result).toEqual({ error: false, response: 5 });
+  });
+
+  it("should return an error if operation is not supported", () => {
+    const result = arithmeticOperationResolver(5, 3, "exponentiation");
+    expect(result).toEqual({
+      error: true,
+      response: "Arithmetic Operation Not Supported: exponentiation",
     });
+  });
 
-    // Tests that the function returns the correct result for valid input values for subtraction operation. 
-    it("test_valid_input_values_subtraction", () => {
-        expect(arithmeticOperationResolver(5, 3, "subtraction")).toBe(2);
-    });
-
-    // Tests that the function throws BadRequest error with appropriate message for unsupported arithmetic operation. 
-    it("test_unsupported_arithmetic_operation", () => {
-        expect(() => arithmeticOperationResolver(2, 3, "exponentiation")).toThrowError(createError.BadRequest);
-    });
-
-    // Tests that the function returns the correct result for valid input values for multiplication operation. 
-    it("test_valid_input_values_multiplication", () => {
-        expect(arithmeticOperationResolver(2, 3, "multiplication")).toBe(6);
-    });
-
-    // Tests that the function returns the correct result for valid input values for division operation. 
-    it("test_valid_input_values_division", () => {
-        expect(arithmeticOperationResolver(6, 3, "division")).toBe(2);
-    });
-
-    // Tests that the function returns the correct result for valid input values for squareRoot operation. 
-    it("test_valid_input_values_square_root", () => {
-        expect(arithmeticOperationResolver(16, null, "squareRoot")).toBe(4);
-    });
+  it("should return an Infinity if the operation divide by 0", () => {
+    const result = arithmeticOperationResolver(5, 0, "division");
+    expect(result).toEqual({ error: false, response: Infinity}); // avalidation to prevent divide by zero is in the middleware
+  });
 });

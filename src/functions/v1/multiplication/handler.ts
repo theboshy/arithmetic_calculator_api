@@ -12,7 +12,7 @@ const multiplication = async (event, context) => {
   let status = 503;
   try {
     const {numberA, numberB} = event.queryStringParameters;
-    internalResponse = multiplicationService(parseInt(numberA), parseInt(numberB));
+    internalResponse = multiplicationService(parseFloat(numberA), parseFloat(numberB));
     if (!internalResponse.error) {
       status = 200;
     }
