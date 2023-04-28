@@ -12,11 +12,9 @@ export const twoNumberValidator = {
     properties: {
       numberA: {
         type: "number",
-        minimum: 0,
       },
       numberB: {
         type: "number",
-        minimum: 1,
       },
     },
     required: ["numberA", "numberB"],

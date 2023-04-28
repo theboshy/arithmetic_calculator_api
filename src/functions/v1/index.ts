@@ -55,7 +55,7 @@ export const subtraction = {
 };
 
 export const multiplication = {
-  handler: `${handlerPath(__dirname)}/subtraction/handler.multiplicationHandler`,
+  handler: `${handlerPath(__dirname)}/multiplication/handler.multiplicationHandler`,
   events: [
     {
       http: {
@@ -72,7 +72,7 @@ export const multiplication = {
 };
 
 export const division = {
-  handler: `${handlerPath(__dirname)}/subtraction/handler.divisionHandler`,
+  handler: `${handlerPath(__dirname)}/division/handler.divisionHandler`,
   events: [
     {
       http: {
@@ -90,7 +90,7 @@ export const division = {
 
 
 export const squareRoot = {
-  handler: `${handlerPath(__dirname)}/subtraction/handler.squareRootHandler`,
+  handler: `${handlerPath(__dirname)}/squareRoot/handler.squareRootHandler`,
   events: [
     {
       http: {

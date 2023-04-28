@@ -4,7 +4,7 @@ type ArithemeticOperationType = (a: number, b?: number) => number;
 
 const arithmeticOperations: Record<string, ArithemeticOperationType> = {
   addition: (a, b) => a + b,
-  subtraction: (a, b) => Math.abs(a - b),
+  subtraction: (a, b) => a - b, //is and arithmetic operation so it should oeprate engatives too? #Math.abs()
   multiplication: (a, b) => a * b,
   division: (a, b) => a / b,
   squareRoot:(a) => Math.sqrt(a)
