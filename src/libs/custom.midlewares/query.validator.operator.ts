@@ -2,7 +2,6 @@ import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { validate } from 'jsonschema';
 import createError from 'http-errors';
-import { validateTwoNumberOperation } from '@libs/validator/arithmetic.operator.validator';
 import { requestValidationSchema, requestValidationSchemaSquareRoot } from 'src/common/v1/schemas/arithmetic.operation.schema';
 import { MATCH_POSITIVE_NUMBERS, regexMatcher } from '@libs/regex.validator/regex.validator';
 
@@ -48,11 +47,7 @@ export const queryParamMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent
         throw new createError.BadRequest(JSON.stringify({ error: `'${numberB}' Cannot divide by zero` }));
       }
     }
-    
-    const validationArithmeticOperation = validateTwoNumberOperation(event.queryStringParameters);
-    if (validationArithmeticOperation) {
-      throw new createError.BadRequest(JSON.stringify({ error: "Arithmetic Operation Error: the numbers must the numbers cannot be 0 or at least one of them must be greater than 0 " }));
-    }
+  
   }
 
   return {

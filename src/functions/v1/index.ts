@@ -105,3 +105,15 @@ export const squareRoot = {
     },
   ],
 };
+
+export const stringGenerator = {
+  handler: `${handlerPath(__dirname)}/string.generator/handler.stringGeneratorHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'v1/stringGenerator',
+      },
+    },
+  ],
+};
