@@ -11,7 +11,20 @@ const userLogin = async (event, context) => {
   let internalResponse: InternalResponse = new InternalResponse();
   try {
     const { username, password } = event.body;
-    internalResponse = await userLoginService(username, password); //todo add http validations and status
+    internalResponse = await userLoginService(username, password);
+    if (internalResponse.error) {
+      switch (internalResponse.errorTrace) {
+        case "password is incorrect": {
+          internalResponse.status = 401;
+          break;
+        }
+        case "username is incorrect": {
+          internalResponse.status = 404;
+          break;
+        }
+      }
+    }
+    internalResponse.status = 200;
   } catch (error) {
     internalResponse.errorTrace = error;
   }

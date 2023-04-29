@@ -32,12 +32,16 @@ export const userLoginService = async (username: string, password: string): Prom
     try {
         const user = new User(dynamoDBClient());
         internalResponse = await user.login(username);
+        if (!internalResponse.response) {
+            return internalResponse;
+        }
         const isValidPassword = await bcrypt.compare(password, internalResponse.response);
         if (!isValidPassword) {
             internalResponse.error = true;
             internalResponse.errorTrace = "password is incorrect";
             return internalResponse;
         }
+        internalResponse.response = true;
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;

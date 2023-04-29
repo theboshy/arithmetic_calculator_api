@@ -20,7 +20,7 @@ export const userLoginSchema = {
         },
         password: {
             type: "string",
-            pattern: "^\\$2[ayb]\\$[0-9]{2}\\$[./0-9A-Za-z]{53}$"
+            //pattern: "^\\$2[ayb]\\$[0-9]{2}\\$[./0-9A-Za-z]{53}$"
         },
     },
     "required": ["username", "password"]

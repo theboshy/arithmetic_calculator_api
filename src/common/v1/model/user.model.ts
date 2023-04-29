@@ -21,9 +21,9 @@ export class User implements UserInterface {
             };
             const { Item } = await this.docClient.get(params).promise();
             if (!Item) {
-                return { error: true, response: undefined, errorTrace: "user don`t exist" }
+                return { error: true, errorTrace: "username is incorrect" }
             }
-            return {error: false, response: Item.password.S};
+            return {error: false, response: Item.password};
         } catch (error) {
             return { error: true, errorTrace: error }
         }
