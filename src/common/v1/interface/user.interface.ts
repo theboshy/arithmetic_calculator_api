@@ -1,13 +1,14 @@
-import { User } from "../model/user.model";
+import { InternalResponseInterface } from "./internal.response";
 
 export interface UserInterface {
     id: string;
     username: string;
-    passwor: string;
+    password: string;
     status: boolean;
-    getAll(): Promise<[User]>
-    get(id: string): Promise<User>
-    create(user: User): Promise<User>
+    tableName: string;
+    getAll(): Promise<InternalResponseInterface>
+    get(id: string): Promise<InternalResponseInterface>
+    create(): Promise<InternalResponseInterface>
     detelete(id: string): Promise<boolean>
     remove(id: string): Promise<boolean>
 }

@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator } from '@functions/v1';
+import { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler } from '@functions/v1';
 import { configDotEnv } from 'dotenv.config'
 
 (async () => {
@@ -43,16 +43,16 @@ const serverlessConfiguration: AWS = {
   },
   resources: {
     Resources: {
-      User: {
+      Users: {
         Type: "AWS::DynamoDB::Table",
         Properties: {
-          TableName: "User",
+          TableName: "Users",
           AttributeDefinitions: [{
-            AttributeName: "id",
+            AttributeName: "username",
             AttributeType: "S",
           }],
           KeySchema: [{
-            AttributeName: "id",
+            AttributeName: "username",
             KeyType: "HASH"
           }],
           ProvisionedThroughput: {
@@ -103,7 +103,7 @@ const serverlessConfiguration: AWS = {
     }
   },
   // import the function via paths
-  functions: { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator },
+  functions: { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler },
   package: { individually: true },
   custom: {
     dynamodb:{

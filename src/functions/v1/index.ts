@@ -117,3 +117,16 @@ export const stringGenerator = {
     },
   ],
 };
+
+
+export const userRegisterHandler = {
+  handler: `${handlerPath(__dirname)}/user.register/handler.userRegisterHandler`,
+  events: [
+    {
+      http: {
+        method: 'post',
+        path: 'v1/register',
+      },
+    },
+  ],
+};

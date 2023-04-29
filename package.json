@@ -6,19 +6,21 @@
   "scripts": {
     "create:database:offline": "docker-compose -f docker-compose.yaml --env-file .env.offline up",
     "start:offline": "serverless offline start --stage=dev NODE_ENV=dev",
-    "test": "jest"
+    "test": "jest --setupFiles dotenv/config"
   },
   "engines": {
     "node": ">=14.15.0"
   },
   "dependencies": {
+    "@aws-sdk/util-dynamodb": "^3.321.1",
     "@middy/core": "^3.4.0",
     "@middy/http-error-handler": "^4.3.1",
     "@middy/http-json-body-parser": "^3.4.0",
     "dotenv": "^16.0.3",
     "http-errors": "^2.0.0",
     "serverless-mysql": "^1.5.5",
-    "serverless-offline": "^12.0.4"
+    "serverless-offline": "^12.0.4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.21.4",
@@ -27,6 +29,9 @@
     "@types/aws-lambda": "^8.10.71",
     "@types/jest": "^29.5.1",
     "@types/node": "^14.14.25",
+    "aws-cli": "^0.0.2",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^29.5.0",
     "esbuild": "^0.14.11",
     "jest": "^29.5.0",
     "json-schema-to-ts": "^1.5.0",
