@@ -4,12 +4,7 @@ import { arithmeticOperationResolver } from "../../../libs/operator.resolver/ari
 export const divisionService = (numberA: number, numberB: number): InternalResponse => {
     let internalResponse: InternalResponse = new InternalResponse;
     try {
-        const {error, response} = arithmeticOperationResolver(numberA, numberB, "division");
-        if (error) {
-            internalResponse.error = true;
-            internalResponse.errorTrace = response;
-        }
-        internalResponse.response = response;
+        internalResponse = arithmeticOperationResolver(numberA, numberB, "division");
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;

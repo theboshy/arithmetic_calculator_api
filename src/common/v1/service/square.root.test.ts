@@ -6,6 +6,7 @@ describe("squareRootService", () => {
     // Arrange
     const number = 16;
     const expectedResponse: InternalResponse = {
+      error: false,
       response: 4,
     };
 
@@ -16,6 +17,7 @@ describe("squareRootService", () => {
   it("should return an error if the input number is negative", () => {
     const number = -16;
     const expectedResponse: InternalResponse = {
+      error: false,
       response: NaN,
     };
     const response = squareRootService(number);

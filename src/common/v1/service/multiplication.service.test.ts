@@ -6,6 +6,7 @@ describe('multiplicationService', () => {
     const numberA = 2;
     const numberB = 3;
     const expectedResponse: InternalResponse = {
+      error: false,
       response: 6,
     };
 
@@ -18,6 +19,7 @@ describe('multiplicationService', () => {
     const numberA = -4;
     const numberB = 2;
     const expectedResponse: InternalResponse = {
+      error: false,
       response: -8,
     };
 
@@ -30,6 +32,7 @@ describe('multiplicationService', () => {
     const numberA = 10;
     const numberB = 0;
     const expectedResponse: InternalResponse = {
+      error: false,
       response: 0,
     };
 

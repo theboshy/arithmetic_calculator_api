@@ -18,7 +18,16 @@ export const arithmeticOperationResolver = (
   try {
     const selectedOperation = arithmeticOperations[operation];
     if (!selectedOperation) {
-     return { error: true, response: `Arithmetic Operation Not Supported: ${operation}` }; //todo: change response for trace error and refactor services too
+     return { error: true, errorTrace: `Arithmetic Operation Not Supported: ${operation}` }; //todo: change response for trace error and refactor services too
+    }
+    if (operation === "squareRoot") {
+      if (isNaN(a)) {
+        return { error: true, errorTrace: `Not A Number` }
+      }
+    } else {
+      if (isNaN(a) || isNaN(b)) {
+        return { error: true, errorTrace: `Not A Number` }
+      }
     }
     const result = selectedOperation(a, b);
     return { error: false, response: result };

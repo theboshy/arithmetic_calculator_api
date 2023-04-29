@@ -9,7 +9,7 @@ import fetch from "node-fetch";
  * @returns The response as the specified type ["json", "plain"]
  * @returns maximun waits before killing the request
  */
-export const fetchUrl = async (url: string, options?: any, responseType: string = "plain", timeout: number = 10000): Promise<InternalResponseInterface> => {
+export const fetchUrl = async (url: string, options?: any, responseType: string = "plain", timeout: number = 5000): Promise<InternalResponseInterface> => {
     const response: InternalResponseInterface = {
       error: false,
       errorTrace: null,

@@ -22,6 +22,7 @@ describe("arithmeticOperationResolver", () => {
   });
 
   it("should calculate the square root of a number correctly", () => {
+    
     const result = arithmeticOperationResolver(25, undefined, "squareRoot");
     expect(result).toEqual({ error: false, response: 5 });
   });
@@ -30,7 +31,7 @@ describe("arithmeticOperationResolver", () => {
     const result = arithmeticOperationResolver(5, 3, "exponentiation");
     expect(result).toEqual({
       error: true,
-      response: "Arithmetic Operation Not Supported: exponentiation",
+      errorTrace: "Arithmetic Operation Not Supported: exponentiation",
     });
   });
 
