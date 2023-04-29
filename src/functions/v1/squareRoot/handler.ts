@@ -3,6 +3,7 @@ import { middyfy } from '@libs/lambda';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { queryParamMiddleware } from '@libs/custom.midlewares/query.validator.operator';
 import { squareRootService } from 'src/common/v1/service/square.root.service';
+import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
 
 
 const squareRoot = async (event, context) => {
@@ -22,4 +23,4 @@ const squareRoot = async (event, context) => {
   return formatJSONResponse(status, {...internalResponse});
 };
 
-export const squareRootHandler = middyfy(squareRoot).use(queryParamMiddleware())
+export const squareRootHandler = middyfy(squareRoot).use(proxyJWTAuthenticator()).use(queryParamMiddleware())

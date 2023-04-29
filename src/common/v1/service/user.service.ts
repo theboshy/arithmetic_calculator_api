@@ -15,10 +15,18 @@ export const userRegisterService = async (username: string, password: string): P
     let internalResponse: InternalResponse = new InternalResponse;
     try {
         const user = new User(dynamoDBClient());
+        const userExist = await user.exists(username)
+        if (userExist.response === username) {
+            internalResponse.error = true;
+            internalResponse.errorTrace = "User already exists";
+            return internalResponse;
+        }
         user.id = v4()
         user.status = true
         user.username = username;
-        user.password = password;
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt);
+        user.password = hash;
         internalResponse = await user.create();
     } catch (error) {
         internalResponse.error = true;
@@ -41,7 +49,7 @@ export const userLoginService = async (username: string, password: string): Prom
             internalResponse.errorTrace = "password is incorrect";
             return internalResponse;
         }
-        internalResponse.response = true;
+        internalResponse.response = {user: username};
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;

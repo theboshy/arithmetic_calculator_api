@@ -1,4 +1,5 @@
 import { formatJSONResponse } from '@libs/api-gateway';
+import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
 import { middyfy } from '@libs/lambda';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { stringGeneratorService } from 'src/common/v1/service/string.generator.service';
@@ -17,4 +18,4 @@ const stringGenerator = async (event, context) => {
   return formatJSONResponse(status, {...internalResponse});
 };
 
-export const stringGeneratorHandler = middyfy(stringGenerator)
+export const stringGeneratorHandler = middyfy(stringGenerator).use(proxyJWTAuthenticator())

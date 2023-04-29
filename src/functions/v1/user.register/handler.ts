@@ -9,17 +9,20 @@ const userRegister = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
   //--
   let internalResponse: InternalResponse = new InternalResponse;
-  let status = 503;
   try {
-    const {username, password} = event.body;
+    const { username, password } = event.body;
     internalResponse = await userRegisterService(username, password);
     if (!internalResponse.error) {
-      status = 200;
+      internalResponse.status = 201;
+    }
+    if (internalResponse.error && internalResponse.errorTrace.includes("already exists")) {
+      internalResponse.status = 409
     }
   } catch (error) {
+    internalResponse.status = 503;
     internalResponse.errorTrace = error;
   }
-  return formatJSONResponse(status, {...internalResponse});
+  return formatJSONResponse(internalResponse.status, { ...internalResponse });
 };
 
 export const userRegisterHandler = middyfy(userRegister).use(proxySchemaValidator(userRegisterSchema))

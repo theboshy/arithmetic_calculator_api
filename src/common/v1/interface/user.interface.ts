@@ -12,4 +12,5 @@ export interface UserInterface {
     detelete(id: string): Promise<boolean>
     remove(id: string): Promise<boolean>
     login(username: string, password: string): Promise<InternalResponseInterface>
+    exists(username: string): Promise<InternalResponseInterface>
 }

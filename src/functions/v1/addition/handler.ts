@@ -3,6 +3,7 @@ import { middyfy } from '@libs/lambda';
 import { additionService } from 'src/common/v1/service/addition.service';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { queryParamMiddleware } from '@libs/custom.midlewares/query.validator.operator';
+import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
 
 
 const addition = async (event, context) => {
@@ -22,4 +23,4 @@ const addition = async (event, context) => {
   return formatJSONResponse(status, {...internalResponse});
 };
 
-export const additionHandler = middyfy(addition).use(queryParamMiddleware())
+export const additionHandler = middyfy(addition).use(proxyJWTAuthenticator()).use(queryParamMiddleware())

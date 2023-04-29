@@ -13,17 +13,33 @@ export class User implements UserInterface {
         this.docClient = docClient;
     }
 
-    async login(username: string): Promise<InternalResponseInterface> {
+    async exists(username: string): Promise<InternalResponseInterface> {
         try {
             const params = {
                 TableName: this.tableName,
-                Key: { username: username},
+                Key: { username: username },
             };
             const { Item } = await this.docClient.get(params).promise();
             if (!Item) {
                 return { error: true, errorTrace: "username is incorrect" }
             }
-            return {error: false, response: Item.password};
+            return { error: false, response: Item.username };
+        } catch (error) {
+            return { error: true, errorTrace: error }
+        }
+    }
+
+    async login(username: string): Promise<InternalResponseInterface> {
+        try {
+            const params = {
+                TableName: this.tableName,
+                Key: { username: username },
+            };
+            const { Item } = await this.docClient.get(params).promise();
+            if (!Item) {
+                return { error: true, errorTrace: "username is incorrect" }
+            }
+            return { error: false, response: Item.password };
         } catch (error) {
             return { error: true, errorTrace: error }
         }
@@ -43,6 +59,7 @@ export class User implements UserInterface {
                 TableName: this.tableName,
                 Item: userDocument
             }).promise()
+            delete userDocument.password;
             return { error: false, response: userDocument.username };
         } catch (error) {
             return { error: true, errorTrace: error };

@@ -1,5 +1,6 @@
 import { formatJSONResponse } from '@libs/api-gateway';
 import { proxySchemaValidator } from '@libs/custom.midlewares/proxy.schema.validation';
+import { jwtSign } from '@libs/jwt/jwt.handler';
 import { middyfy } from '@libs/lambda';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { userLoginSchema } from 'src/common/v1/schemas/user.schema';
@@ -12,6 +13,7 @@ const userLogin = async (event, context) => {
   try {
     const { username, password } = event.body;
     internalResponse = await userLoginService(username, password);
+    internalResponse.status = 503;
     if (internalResponse.error) {
       switch (internalResponse.errorTrace) {
         case "password is incorrect": {
@@ -24,7 +26,16 @@ const userLogin = async (event, context) => {
         }
       }
     }
-    internalResponse.status = 200;
+    await jwtSign(internalResponse.response)
+      .then(token => {
+        internalResponse.response = token;
+        internalResponse.status = 200;
+      })
+      .catch(err => {
+        internalResponse.status = 503;
+        internalResponse.errorTrace = err;
+      });
+
   } catch (error) {
     internalResponse.errorTrace = error;
   }
