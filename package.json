@@ -6,7 +6,8 @@
   "scripts": {
     "create:database:offline": "docker-compose -f docker-compose.yaml --env-file .env.offline up",
     "start:offline": "serverless offline start --stage=dev NODE_ENV=dev",
-    "test": "jest --setupFiles dotenv/config"
+    "seed:operations": "npx ts-node src/common/seeds/operation.seed/operation.seed.ts",
+    "test": "jest"
   },
   "engines": {
     "node": ">=14.15.0"
