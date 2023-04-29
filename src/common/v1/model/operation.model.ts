@@ -1,9 +1,9 @@
-import { PropertiesRequestItems, convertToRequestItems } from "@libs/dynamo.request.resolver/properties.to.dynamo.request";
+import { PropertiesRequestItems, convertToRequestItems } from "../../../libs/dynamo.request.resolver/properties.to.dynamo.request";
 import { InternalResponseInterface } from "../interface/internal.response";
 import { OperationInterface } from "../interface/operation.interface";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
-export class OperationModel implements OperationInterface {
+export class Operation implements OperationInterface {
     id: string;
     type: string;
     cost: number;
@@ -11,6 +11,22 @@ export class OperationModel implements OperationInterface {
 
     constructor(private docClient: DocumentClient) { //should use dependency injection instead
         this.docClient = docClient;
+    }
+
+    async get(id: string): Promise<InternalResponseInterface> {
+       try {
+            const params = {
+                TableName: this.tableName,
+                Key: { id },
+            };
+            const { Item } = await this.docClient.get(params).promise();
+            if (!Item) {
+                return { error: true, errorTrace: "operation id not found" }
+            }
+            return { error: false, response: Item as Operation };
+        } catch (error) {
+            return { error: true, errorTrace: error }
+        }
     }
 
     async getAll(limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponseInterface> {

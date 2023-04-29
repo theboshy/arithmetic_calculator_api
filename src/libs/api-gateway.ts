@@ -7,6 +7,11 @@ export type ValidatedEventAPIGatewayProxyEvent<S> = Handler<ValidatedAPIGatewayP
 type ValidatedAPIGatewayProxyEventParams<S> = Omit<APIGatewayProxyEvent, 'queryStringParameters'> & { queryStringParameters: FromSchema<S> };
 export type ValidatedEventAPIGatewayProxyEventParams<S> = Handler<ValidatedAPIGatewayProxyEventParams<S>, APIGatewayProxyResult>;
 
+export interface CustomAPIGatewayProxyEvent extends APIGatewayProxyEvent {
+  jwtTokenDecoded: {
+    jwtToken: string;
+  };
+}
 
 export const formatJSONResponse = (status: number, response: Record<string, unknown>) => {
   return {

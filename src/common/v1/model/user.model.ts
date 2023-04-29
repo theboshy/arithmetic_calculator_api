@@ -48,10 +48,22 @@ export class User implements UserInterface {
     async getAll(): Promise<InternalResponseInterface> {
         throw new Error("Not implemented");
     }
-    async get(id: string): Promise<InternalResponseInterface> {
-        console.log(id)
-        throw new Error("Method not implemented.");
+    async get(username: string): Promise<InternalResponseInterface> {
+        try {
+            const params = {
+                TableName: this.tableName,
+                Key: { username: username },
+            };
+            const { Item } = await this.docClient.get(params).promise();
+            if (!Item) {
+                return { error: true, errorTrace: "username is incorrect" }
+            }
+            return { error: false, response: Item as User };
+        } catch (error) {
+            return { error: true, errorTrace: error }
+        }
     }
+    
     async create(): Promise<InternalResponseInterface> {
         try {
             const userDocument = this.toDocument();
@@ -74,7 +86,7 @@ export class User implements UserInterface {
         throw new Error("Method not implemented.");
     }
 
-    toDocument = () => {
+    toDocument = (): any => {
         try {
             const params = {
                 id: this.id,

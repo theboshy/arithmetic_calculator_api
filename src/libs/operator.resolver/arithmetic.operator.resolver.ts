@@ -32,6 +32,6 @@ export const arithmeticOperationResolver = (
     const result = selectedOperation(a, b);
     return { error: false, response: result };
   } catch (error) {
-    return { error: true, errorTrace: error.message, response: undefined };
+    return { error: true, errorTrace: error.message };
   }
 };

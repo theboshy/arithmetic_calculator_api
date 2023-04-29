@@ -1,11 +1,11 @@
+import { CustomAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { jwtVerify } from '@libs/jwt/jwt.handler';
 import middy from '@middy/core';
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayProxyResult } from 'aws-lambda';
 import createError from 'http-errors';
 
-
-export const proxyJWTAuthenticator = (): middy.MiddlewareObj<APIGatewayProxyEvent, APIGatewayProxyResult> => {
-    const before: middy.MiddlewareFn<APIGatewayProxyEvent, APIGatewayProxyResult> = async (
+export const proxyJWTAuthenticator = (): middy.MiddlewareObj<CustomAPIGatewayProxyEvent, APIGatewayProxyResult> => {
+    const before: middy.MiddlewareFn<CustomAPIGatewayProxyEvent, APIGatewayProxyResult> = async (
         request
     ): Promise<void> => {
         const { event } = request;
@@ -17,8 +17,7 @@ export const proxyJWTAuthenticator = (): middy.MiddlewareObj<APIGatewayProxyEven
 
         await jwtVerify(token)
             .then(decoded => {
-                //event.body = JSON.parse(decoded)
-                //console.log(decoded)
+                event.jwtTokenDecoded = { jwtToken: JSON.stringify(decoded)}
             })
             .catch(err => {
                 throw new createError.Unauthorized(JSON.stringify({ error: `Unauthorized: ${err}` }));

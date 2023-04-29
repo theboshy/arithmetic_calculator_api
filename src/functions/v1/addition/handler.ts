@@ -13,6 +13,7 @@ const addition = async (event, context) => {
   let status = 503;
   try {
     const {numberA, numberB} = event.queryStringParameters;
+    console.log("token: ", event.jwtTokenDecoded)
     internalResponse = additionService(parseFloat(numberA), parseFloat(numberB));
     if (!internalResponse.error) {
       status = 200;
