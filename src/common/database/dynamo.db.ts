@@ -1,12 +1,11 @@
 import * as AWS from "aws-sdk";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
-AWS.config.update({
-  region: 'us-east-1',
-});
-
 export const dynamoDBClient = (): DocumentClient => {
   if (process.env.IS_OFFLINE) {
+    AWS.config.update({
+      region: 'us-east-1',
+    });
     return new AWS.DynamoDB.DocumentClient({
       //region: "local",
       endpoint: "http://localhost:5000",
