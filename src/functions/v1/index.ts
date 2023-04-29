@@ -143,3 +143,15 @@ export const userLoginHandler = {
     },
   ],
 };
+
+export const operationGetAllHandler = {
+  handler: `${handlerPath(__dirname)}/operation.get.all/handler.operationGetAllHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'v1/operation',
+      },
+    },
+  ],
+};

@@ -12,7 +12,9 @@ export const queryParamMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent
     request
   ): Promise<void> => {
     const { event } = request;
-
+    if (!event.queryStringParameters) {
+      throw new createError.BadRequest(JSON.stringify({ error: "Request queryStringParameters validation failed is null" }));
+    }
     //square root validation (prevents negative numbers to not handle any cost)
     if (event.path.includes("squareRoot")) {
       const requestValidation = validate(event.queryStringParameters, requestValidationSchemaSquareRoot);
@@ -26,9 +28,7 @@ export const queryParamMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent
       return;
     }
     //-- validation and verifications before executin a transaction cost
-    if (!event.queryStringParameters) {
-      throw new createError.BadRequest(JSON.stringify({ error: "Request queryStringParameters validation failed is null" }));
-    }
+
     const validationResult = validate(event.queryStringParameters, requestValidationSchema);
     if (validationResult.errors.length > 0) {
       throw new createError.BadRequest(JSON.stringify({ error: "Request queryStringParameters validation failed: is not of a type(s) object" }));
@@ -47,7 +47,7 @@ export const queryParamMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent
         throw new createError.BadRequest(JSON.stringify({ error: `'${numberB}' Cannot divide by zero` }));
       }
     }
-  
+
   }
 
   return {

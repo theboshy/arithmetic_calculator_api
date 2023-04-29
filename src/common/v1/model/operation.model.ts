@@ -13,11 +13,28 @@ export class OperationModel implements OperationInterface {
         this.docClient = docClient;
     }
 
+    async getAll(limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponseInterface> {
+        console.log(lastEvaluatedKey)
+        try {
+            let params = {
+                TableName: this.tableName,
+                Limit: limit,
+            };
+            if (lastEvaluatedKey) {
+                params["ExclusiveStartKey"] = {id: lastEvaluatedKey};
+            }
+            const operations = await this.docClient.scan(params).promise()
+            return { error: false, response: operations }
+        } catch (error) {
+            return { error: true, errorTrace: error }
+        }
+    }
+
 
     async batchWriteItem(items: [any]): Promise<InternalResponseInterface> {
         const requestItems: PropertiesRequestItems = convertToRequestItems(items);
         const params = {
-            RequestItems: { 
+            RequestItems: {
                 ...requestItems
             }
         }

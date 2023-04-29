@@ -2,7 +2,7 @@ import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 import { additionService } from 'src/common/v1/service/addition.service';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
-import { queryParamMiddleware } from '@libs/custom.midlewares/query.validator.operator';
+import { queryParamMiddleware } from '@libs/custom.midlewares/arithmetic.query.numbers.validator.operator';
 import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
 
 

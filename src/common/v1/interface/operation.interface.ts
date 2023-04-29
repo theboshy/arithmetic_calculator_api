@@ -7,4 +7,5 @@ export interface OperationInterface {
     cost: number;
     tableName: string;
     batchWriteItem(items: [OperationModel]): Promise<InternalResponseInterface>
+    getAll(limit: number, lastEvaluatedKey?:string): Promise<InternalResponseInterface>
 }

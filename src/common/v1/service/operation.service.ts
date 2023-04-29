@@ -14,3 +14,15 @@ export const operationBatchWriteService = async (operations: [OperationModel]): 
     }
     return internalResponse;
 }
+
+export const operationGetAllService = async (limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponseInterface> => {
+    let internalResponse: InternalResponse = new InternalResponse;
+    try {
+        const operation = new OperationModel(dynamoDBClient());
+        internalResponse = await operation.getAll(limit, lastEvaluatedKey);
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = error;
+    }
+    return internalResponse;
+}

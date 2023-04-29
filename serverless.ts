@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
-import { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler, userLoginHandler } from '@functions/v1';
+import { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler,
+   userLoginHandler, operationGetAllHandler } from '@functions/v1';
 import { configDotEnv } from 'dotenv.config'
 
 (async () => {
@@ -81,10 +82,10 @@ const serverlessConfiguration: AWS = {
 
         }
       },
-      Record: {
+      UserRecord: {
         Type: "AWS::DynamoDB::Table",
         Properties: {
-          TableName: "Record",
+          TableName: "UserRecord",
           AttributeDefinitions: [{
             AttributeName: "date",
             AttributeType: "S",
@@ -103,7 +104,7 @@ const serverlessConfiguration: AWS = {
     }
   },
   // import the function via paths
-  functions: { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler, userLoginHandler },
+  functions: { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler, userLoginHandler, operationGetAllHandler },
   package: { individually: true },
   custom: {
     dynamodb:{
