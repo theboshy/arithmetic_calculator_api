@@ -18,7 +18,7 @@ export const arithmeticOperationResolver = (
   try {
     const selectedOperation = arithmeticOperations[operation];
     if (!selectedOperation) {
-     return { error: true, response: `Arithmetic Operation Not Supported: ${operation}` };
+     return { error: true, response: `Arithmetic Operation Not Supported: ${operation}` }; //todo: change response for trace error and refactor services too
     }
     const result = selectedOperation(a, b);
     return { error: false, response: result };

@@ -1,7 +1,8 @@
 import { InternalResponseInterface } from "../interface/internal.response";
 
 export class InternalResponse implements InternalResponseInterface {
+    status?: number = 503;
     error?: boolean;
     errorTrace?: string;
-    response: any = null;
+    response?: any = null;
 }

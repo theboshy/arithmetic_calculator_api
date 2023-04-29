@@ -13,15 +13,24 @@ export class User implements UserInterface {
         this.docClient = docClient;
     }
 
-    async getAll(): Promise<InternalResponseInterface> {
+    async login(username: string): Promise<InternalResponseInterface> {
         try {
-            const users = await this.docClient.scan({
+            const params = {
                 TableName: this.tableName,
-            }).promise()
-            return { error: false, response: users.Items as [User] };
+                Key: { username: username},
+            };
+            const { Item } = await this.docClient.get(params).promise();
+            if (!Item) {
+                return { error: true, response: undefined, errorTrace: "user don`t exist" }
+            }
+            return {error: false, response: Item.password.S};
         } catch (error) {
-            return { error: true, response: error };
+            return { error: true, errorTrace: error }
         }
+    }
+
+    async getAll(): Promise<InternalResponseInterface> {
+        throw new Error("Not implemented");
     }
     async get(id: string): Promise<InternalResponseInterface> {
         console.log(id)
@@ -36,7 +45,7 @@ export class User implements UserInterface {
             }).promise()
             return { error: false, response: userDocument.username };
         } catch (error) {
-            return { error: true, response: error };
+            return { error: true, errorTrace: error };
         }
     }
     async detelete(id: string): Promise<boolean> {

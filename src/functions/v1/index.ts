@@ -130,3 +130,16 @@ export const userRegisterHandler = {
     },
   ],
 };
+
+
+export const userLoginHandler = {
+  handler: `${handlerPath(__dirname)}/user.login/handler.userLoginHandler`,
+  events: [
+    {
+      http: {
+        method: 'post',
+        path: 'v1/login',
+      },
+    },
+  ],
+};

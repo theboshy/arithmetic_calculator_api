@@ -1,1 +1,4 @@
-export { test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler } from './v1';
+export { 
+    test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler,
+    userLoginHandler, 
+} from './v1';
