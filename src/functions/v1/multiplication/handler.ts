@@ -4,6 +4,7 @@ import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { queryParamMiddleware } from '@libs/custom.midlewares/arithmetic.query.numbers.validator.operator';
 import { multiplicationService } from 'src/common/v1/service/multiplication.service';
 import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
+import { costPerRequestMiddleware } from '@libs/custom.midlewares/cost.per.request.middleware';
 
 
 const multiplication = async (event, context) => {
@@ -23,4 +24,7 @@ const multiplication = async (event, context) => {
   return formatJSONResponse(status, {...internalResponse});
 };
 
-export const multiplicationHandler = middyfy(multiplication).use(proxyJWTAuthenticator()).use(queryParamMiddleware())
+export const multiplicationHandler = middyfy(multiplication)
+.use(proxyJWTAuthenticator())
+.use(queryParamMiddleware())
+.use(costPerRequestMiddleware())

@@ -4,6 +4,7 @@ import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { queryParamMiddleware } from '@libs/custom.midlewares/arithmetic.query.numbers.validator.operator';
 import { subtractionService } from 'src/common/v1/service/subtraction.service';
 import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
+import { costPerRequestMiddleware } from '@libs/custom.midlewares/cost.per.request.middleware';
 
 const subtraction = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
@@ -22,4 +23,8 @@ const subtraction = async (event, context) => {
   return formatJSONResponse(status, {...internalResponse});
 };
 
-export const subtractionHandler = middyfy(subtraction).use(proxyJWTAuthenticator()).use(queryParamMiddleware())
+export const subtractionHandler = middyfy(subtraction)
+.use(proxyJWTAuthenticator())
+.use(queryParamMiddleware())
+.use(costPerRequestMiddleware())
+

@@ -6,6 +6,7 @@ import createError from 'http-errors';
 import { getUser } from 'src/common/v1/service/user.service';
 import { operationGetService } from 'src/common/v1/service/operation.service';
 
+//todo: better to reuse the event varaibles and loaded from database (declare in before use in before and after)
 export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGatewayProxyEvent, APIGatewayProxyResult> => {
     const before: middy.MiddlewareFn<CustomAPIGatewayProxyEvent, APIGatewayProxyResult> = async (
         request

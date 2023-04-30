@@ -14,6 +14,7 @@ interface Property {
     Operation: Operation[];
   }
   
+  //no puede ser generico?
   export const convertToRequestItems = (properties: Property[]): PropertiesRequestItems  => {
     const operations: Operation[] = properties.map((property: Property) => {
       const putRequest: PutRequest = {

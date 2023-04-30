@@ -20,6 +20,7 @@ export class UserRecord implements RecordInterface {
 
     async update(userId: string, properties: any): Promise<InternalResponseInterface> {
         try {
+            //todo: move this serializer to an utils folder
             let updateExpression = "SET ";
             let expressionAtributeNames = {}
             let expressionAtributeValues = {}
