@@ -30,7 +30,6 @@ export class Operation implements OperationInterface {
     }
 
     async getAll(limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponseInterface> {
-        console.log(lastEvaluatedKey)
         try {
             let params = {
                 TableName: this.tableName,
