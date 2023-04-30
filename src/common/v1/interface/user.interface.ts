@@ -13,4 +13,5 @@ export interface UserInterface {
     remove(id: string): Promise<boolean>
     login(username: string, password: string): Promise<InternalResponseInterface>
     exists(username: string): Promise<InternalResponseInterface>
+    toDocument(): any
 }
