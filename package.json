@@ -4,7 +4,7 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "create:database:offline": "docker-compose -f docker-compose.yaml --env-file .env.offline up",
+    "install:ts": "npm install -g ts-node",
     "install:serverless": "npm install -g serverless",
     "install:dynamodb": "serverless dynamodb install",
     "start:offline": "serverless offline start --stage=dev NODE_ENV=dev",
