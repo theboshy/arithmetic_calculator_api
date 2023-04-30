@@ -4,6 +4,11 @@ This project has been generated using the `aws-nodejs-typescript` template from 
 
 For detailed instructions, please refer to the [documentation](https://www.serverless.com/framework/docs/providers/aws/).
 
+
+## TEST with POSTMAN
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1634830-5e29fd2d-ddd6-47fa-a3bd-b0070ee1e3e5?action=collection%2Ffork&collection-url=entityId%3D1634830-5e29fd2d-ddd6-47fa-a3bd-b0070ee1e3e5%26entityType%3Dcollection%26workspaceId%3D3efd7cc2-89ee-4495-94c3-44557799cbab)
+
 ## Installation/deployment instructions
 
 Depending on your preferred package manager, follow the instructions below to deploy your project.
