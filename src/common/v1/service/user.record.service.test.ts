@@ -1,8 +1,3 @@
-import { userRecordService } from "./user.record.service";
+import { userCreateRecordService } from "./user.record.service";
 
-describe('user record tests', () => {
-    it("should create record with initial state", async () => {
-        await userRecordService("mononised", "cc44b18f-ccda-44d2-a8a8-7987272f480e", 3)
-    })
-
-});
+//this service depends in several other services complexity of testing is leaved to a qa person

@@ -26,3 +26,15 @@ export const operationGetAllService = async (limit: number = 100, lastEvaluatedK
     }
     return internalResponse;
 }
+
+export const operationGetService = async (operationId: string): Promise<InternalResponseInterface> => {
+    let internalResponse: InternalResponse = new InternalResponse;
+    try {
+        const operation = new Operation(dynamoDBClient());
+        internalResponse = await operation.get(operationId);
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = error;
+    }
+    return internalResponse;
+}

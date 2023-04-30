@@ -49,7 +49,22 @@ export const userLoginService = async (username: string, password: string): Prom
             internalResponse.errorTrace = "password is incorrect";
             return internalResponse;
         }
-        internalResponse.response = {user: username};
+        internalResponse.response = { user: username };
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = error;
+    }
+    return internalResponse;
+}
+
+export const getUser = async (username: string): Promise<InternalResponseInterface> => {
+    let internalResponse: InternalResponse = new InternalResponse;
+    try {
+        const user = new User(dynamoDBClient());
+        internalResponse = await user.get(username);
+        if (!internalResponse.error) {
+            return internalResponse;
+        }
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;

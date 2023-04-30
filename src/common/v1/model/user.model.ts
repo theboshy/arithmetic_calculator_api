@@ -96,7 +96,7 @@ export class User implements UserInterface {
             };
             return params;
         } catch (error) {
-            console.log("error: ", error)
+            return error
         }
     }
 

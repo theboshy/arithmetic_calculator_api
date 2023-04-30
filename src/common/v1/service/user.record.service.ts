@@ -5,34 +5,55 @@ import { User } from "../model/user.model";
 import { Operation } from "../model/operation.model";
 import { v4 } from "uuid";
 
-export const userRecordService = async (username: string, operationId: string, operationResponse: any): Promise<InternalResponse> => {
+export const userCreateRecordService = async (user: User, operation: Operation, operationResponse: any, balance?: number, last?: boolean): Promise<InternalResponse> => {
     let internalResponse: InternalResponse = new InternalResponse;
     try {
         const dynamodbConection = dynamoDBClient();
         const userRecord = new UserRecord(dynamodbConection);
-        const user = new User(dynamodbConection);
-        const userResult = await user.get(username);
-        if (userResult.error) {
-            internalResponse = userResult
-            internalResponse.status = 404
-            return internalResponse;
-        }
-        const lastRecordOfUser = await userRecord.getLast(userResult.response.id);
-        if (lastRecordOfUser.errorTrace === "userId is incorrect" || lastRecordOfUser.response === undefined) {//create initial user balance record (todo: ensure only when there is no records of balance)
-            userRecord.userBalance = parseInt(process.env.INITIAL_USER_BALANCE);
-        } else {
-            userRecord.userBalance = lastRecordOfUser.response.userBalance;
-        }
-        const operation = new Operation(dynamodbConection);
-        const operationResult = await operation.get(operationId);
-        if (operationResult.error) {
-            internalResponse = operationResult
-            internalResponse.status = 404
-            return operationResult;
-        }
-        Math.abs(userRecord.userBalance -= operationResult.response.cost);
         userRecord.id = v4();
-        internalResponse = await userRecord.create(userResult.response, operationResult.response, operationResponse);
+        userRecord.userId = user.id;
+        userRecord.operationId = operation.id;
+        userRecord.amount = operation.cost;
+        userRecord.date = new Date().toISOString();
+        userRecord.operationResponse = operationResponse
+        userRecord.userBalance = balance;
+        userRecord.last = last;
+        internalResponse = await userRecord.create();
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = error;
+    }
+    return internalResponse;
+}
+
+/**
+
+Retrieves the last record of a user from DynamoDB.
+@param username The username of the user to get the last record for.
+@param userId The ID of the user to get the last record for. (if already have the userId, just set username to null)
+@returns A Promise that resolves to an InternalResponse containing the result of the operation.
+*/
+export const userGetLastRecord = async (userId: string): Promise<InternalResponse> => {
+    let internalResponse: InternalResponse = new InternalResponse;
+    try {
+        const dynamodbConection = dynamoDBClient();
+        let userRecord = new UserRecord(dynamodbConection);
+        const lastRecordOfUser = await userRecord.getLast(userId);
+        internalResponse = lastRecordOfUser;
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = error;
+    }
+    return internalResponse;
+}
+
+export const updatetRecord = async (userId: string, properties: any): Promise<InternalResponse> => {
+    let internalResponse: InternalResponse = new InternalResponse;
+    try {
+        const dynamodbConection = dynamoDBClient();
+        let userRecord = new UserRecord(dynamodbConection);
+        const lastRecordOfUser = await userRecord.update(userId, properties);
+        internalResponse = lastRecordOfUser;
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;

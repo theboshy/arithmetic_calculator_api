@@ -17,7 +17,7 @@ export const proxyJWTAuthenticator = (): middy.MiddlewareObj<CustomAPIGatewayPro
 
         await jwtVerify(token)
             .then(decoded => {
-                event.jwtTokenDecoded = { jwtToken: JSON.stringify(decoded)}
+                event.decoded = JSON.parse(JSON.stringify(decoded))
             })
             .catch(err => {
                 throw new createError.Unauthorized(JSON.stringify({ error: `Unauthorized: ${err}` }));
