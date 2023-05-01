@@ -19,7 +19,7 @@ export const queryParamMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent
     if (event.path.includes("squareRoot")) {
       const requestValidation = validate(event.queryStringParameters, requestValidationSchemaSquareRoot);
       if (requestValidation.errors.length > 0) {
-        throw new createError.BadRequest(JSON.stringify({ error: "request error number required" }));
+        throw new createError.BadRequest(JSON.stringify({ error: "request error number required", errorTrace: requestValidation.errors }));
       }
       const { numberA } = event.queryStringParameters
       if (!regexMatcher(numberA, MATCH_POSITIVE_NUMBERS)) {
@@ -31,7 +31,7 @@ export const queryParamMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent
 
     const validationResult = validate(event.queryStringParameters, requestValidationSchema);
     if (validationResult.errors.length > 0) {
-      throw new createError.BadRequest(JSON.stringify({ error: "Request queryStringParameters validation failed: is not of a type(s) object" }));
+      throw new createError.BadRequest(JSON.stringify({ error: "Request queryStringParameters validation failed: is not of a type(s) object", errorTrace: validationResult.errors }));
     }
     const { numberA, numberB } = event.queryStringParameters;
     if (!regexMatcher(numberA)) {

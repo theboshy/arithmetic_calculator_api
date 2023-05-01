@@ -1,32 +1,19 @@
 import { formatJSONResponse } from '@libs/api-gateway';
 import { proxySchemaValidator } from '@libs/custom.midlewares/proxy.schema.validation';
+import { verifyUserLoginMiddleware } from '@libs/custom.midlewares/verify.user.middleware';
 import { jwtSign } from '@libs/jwt/jwt.handler';
 import { middyfy } from '@libs/lambda';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { userLoginSchema } from 'src/common/v1/schemas/user.schema';
-import { userLoginService } from 'src/common/v1/service/user.service';
 
 const userLogin = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
   //--
   let internalResponse: InternalResponse = new InternalResponse();
   try {
-    const { username, password } = event.body;
-    internalResponse = await userLoginService(username, password);
-    internalResponse.status = 503;
-    if (internalResponse.error) {
-      switch (internalResponse.errorTrace) {
-        case "password is incorrect": {
-          internalResponse.status = 401;
-          break;
-        }
-        case "username is incorrect": {
-          internalResponse.status = 404;
-          break;
-        }
-      }
-    }
-    await jwtSign(internalResponse.response)
+    const { username } = event.body;
+
+    await jwtSign({ user: username })
       .then(token => {
         internalResponse.response = token;
         internalResponse.status = 200;
@@ -42,4 +29,4 @@ const userLogin = async (event, context) => {
   return formatJSONResponse(internalResponse.status, { ...internalResponse });
 };
 
-export const userLoginHandler = middyfy(userLogin).use(proxySchemaValidator(userLoginSchema))
+export const userLoginHandler = middyfy(userLogin).use(proxySchemaValidator(userLoginSchema)).use(verifyUserLoginMiddleware())

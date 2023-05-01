@@ -11,7 +11,7 @@ export const proxySchemaQueryValidator = (schema: any): middy.MiddlewareObj<APIG
         const { event } = request;
         const validationResult = validate(event.queryStringParameters, schema);
         if (validationResult.errors.length > 0) {
-            throw new createError.BadRequest(JSON.stringify({ error: `is an invalid input` }));
+            throw new createError.BadRequest(JSON.stringify({ error: `is an invalid input`, errorTrace: validationResult.errors }));
         }
     }
 

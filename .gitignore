@@ -11,3 +11,9 @@ jspm_packages
 
 .dynamodb
 AwsConfig.json
+
+# Ignores compiled TypeScript files
+**/src/common/**/*.map
+**/src/common/**/*.js
+
+lib/

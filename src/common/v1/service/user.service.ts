@@ -15,12 +15,6 @@ export const userRegisterService = async (username: string, password: string): P
     let internalResponse: InternalResponse = new InternalResponse;
     try {
         const user = new User(dynamoDBClient());
-        const userExist = await user.exists(username)
-        if (userExist.response === username) {
-            internalResponse.error = true;
-            internalResponse.errorTrace = "User already exists";
-            return internalResponse;
-        }
         user.id = v4()
         user.status = true
         user.username = username;
@@ -47,6 +41,7 @@ export const userLoginService = async (username: string, password: string): Prom
         if (!isValidPassword) {
             internalResponse.error = true;
             internalResponse.errorTrace = "password is incorrect";
+            delete internalResponse.response;
             return internalResponse;
         }
         internalResponse.response = { user: username };
