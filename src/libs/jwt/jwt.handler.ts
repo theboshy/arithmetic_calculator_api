@@ -2,11 +2,7 @@ import jwt from 'jsonwebtoken';
 
 export const jwtSign = (payload: any, expiration: string = '1h') => {
     return new Promise<any>((resolve, reject) => {
-        const today = new Date();
-        if (expiration === "1h") {
-            today.setHours(today.getHours() + 1);
-        }
-        jwt.sign({ ...payload, today }, process.env.JWT_SECRET, { expiresIn: expiration }, (err, token) => {
+        jwt.sign({ ...payload }, process.env.JWT_SECRET, { expiresIn: expiration }, (err, token) => {
             if (err) {
                 reject(err)
             }
