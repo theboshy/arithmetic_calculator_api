@@ -1,6 +1,6 @@
 import { Operation } from "../model/operation.model";
 import { User } from "../model/user.model";
-import { InternalResponseInterface } from "./internal.response";
+import { InternalResponseInterface, InternalResponsePaginatedInterface } from "./internal.response";
 
 export interface RecordInterface {
     id: string;
@@ -14,7 +14,8 @@ export interface RecordInterface {
     tableName: string;
     create(user: User, operation: Operation, operationResponse: any): Promise<InternalResponseInterface>
     getLast(userId: string): Promise<InternalResponseInterface>;
-    update(userId: string, properties: Map<String, any>): Promise<InternalResponseInterface>
-    getAll(limit: number, lastEvalutedKey: string): Promise<InternalResponsePaginatedInterface>
+    update(id: string, properties: Map<String, any>): Promise<InternalResponseInterface>
+    getAllByUser(limit: number, lastEvalutedKey: string, userId: string): Promise<InternalResponsePaginatedInterface>
+    getAll(limit: number, lastEvaluatedKey: string): Promise<InternalResponsePaginatedInterface>
     toDocument(): any
 }

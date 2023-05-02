@@ -1,3 +1,5 @@
-import { userCreateRecordService } from "./user.record.service";
+import { userGetLastRecord } from "./user.record.service";
 
-//this service depends in several other services complexity of testing is leaved to a qa person
+it("", async () => {
+    console.log(await userGetLastRecord("f2eca6ac-2fb0-4050-8737-9bc2340201c6"))
+})

@@ -1,7 +1,6 @@
 import { RecordInterface } from "../interface/record.interface";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { InternalResponseInterface, InternalResponsePaginatedInterface } from "../interface/internal.response";
-import { User } from "./user.model";
 
 export class UserRecord implements RecordInterface {
     id: string;
@@ -17,6 +16,31 @@ export class UserRecord implements RecordInterface {
     constructor(private docClient: DocumentClient) { //should use dependency injection instead
         this.docClient = docClient;
     }
+
+    async getAllByUser(limit: number = 100, lastEvaluatedKey: string, userId: string): Promise<InternalResponsePaginatedInterface> {
+        console.log("getAllByUser id: " + userId);
+        try {
+            let params = {
+                TableName: this.tableName,
+                FilterExpression: 'userId = :userId',
+                ExpressionAttributeValues: {
+                    ':userId': userId,
+                },
+                Limit: limit,
+            };
+            if (lastEvaluatedKey) {
+                params["ExclusiveStartKey"] = { id: lastEvaluatedKey };
+            }
+            const { Items, LastEvaluatedKey } = await this.docClient.scan(params).promise()
+            if (!Items || Items.length === 0) {
+                return { error: true, errorTrace: "user records is void" }
+            }
+            return { error: false, response: { items: Items as [UserRecord], lastEvaluatedKey: LastEvaluatedKey } }
+        } catch (error) {
+            return { error: true, errorTrace: error }
+        }
+    }
+
 
     async getAll(limit: number = 100, lastEvaluatedKey: string): Promise<InternalResponsePaginatedInterface> {
         try {
@@ -37,7 +61,7 @@ export class UserRecord implements RecordInterface {
         }
     }
 
-    async update(userId: string, properties: any): Promise<InternalResponseInterface> {
+    async update(id: string, properties: any): Promise<InternalResponseInterface> {
         try {
             //todo: move this serializer to an utils folder
             let updateExpression = "SET ";
@@ -52,9 +76,11 @@ export class UserRecord implements RecordInterface {
                 entries--;
             }
             const userRecordDocument = this.toDocument();
+            console.log("docuemnto persit === >", properties)
+            console.log("userids === >", id)
             const params = {
                 TableName: this.tableName,
-                Key: { userId },
+                Key: { id },
                 UpdateExpression: updateExpression,
                 ExpressionAttributeNames: expressionAtributeNames,
                 ExpressionAttributeValues: expressionAtributeValues
@@ -84,14 +110,18 @@ export class UserRecord implements RecordInterface {
         try {
             const params = {
                 TableName: this.tableName,
-                Key: { userId },
-                FilterExpression: { last: true }
+                FilterExpression: 'userId = :userId and #LS = :val',
+                ExpressionAttributeNames: { "#LS": "last" },
+                ExpressionAttributeValues: {
+                    ':userId': userId,
+                    ':val': true
+                }
             };
-            const { Item } = await this.docClient.get(params).promise();
-            if (!Item) {
+            const { Items } = await this.docClient.scan(params).promise();
+            if (!Items || Items.length === 0) {
                 return { error: true, errorTrace: "user have no records" }
             }
-            return { error: false, response: Item as User };
+            return { error: false, response: Items[0] as UserRecord };
         } catch (error) {
             return { error: true, errorTrace: error }
         }

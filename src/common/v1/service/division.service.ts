@@ -7,7 +7,7 @@ export const divisionService = (numberA: number, numberB: number): InternalRespo
         internalResponse = arithmeticOperationResolver(numberA, numberB, "division");
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }

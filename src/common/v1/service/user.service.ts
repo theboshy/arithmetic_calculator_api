@@ -24,7 +24,7 @@ export const userRegisterService = async (username: string, password: string): P
         internalResponse = await user.create();
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }
@@ -47,7 +47,7 @@ export const userLoginService = async (username: string, password: string): Prom
         internalResponse.response = { user: username };
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }
@@ -62,7 +62,7 @@ export const getUser = async (username: string): Promise<InternalResponseInterfa
         }
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }

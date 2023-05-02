@@ -24,7 +24,7 @@ const userLogin = async (event, context) => {
       });
 
   } catch (error) {
-    internalResponse.errorTrace = error;
+    internalResponse.errorTrace = "An internal error occurred";
   }
   return formatJSONResponse(internalResponse.status, { ...internalResponse });
 };

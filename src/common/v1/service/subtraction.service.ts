@@ -7,7 +7,7 @@ export const subtractionService = (numberA: number, numberB: number): InternalRe
         internalResponse = arithmeticOperationResolver(numberA, numberB, "subtraction");
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }

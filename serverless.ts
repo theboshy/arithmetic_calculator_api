@@ -89,11 +89,11 @@ const serverlessConfiguration: AWS = {
         Properties: {
           TableName: "UserRecord",
           AttributeDefinitions: [{
-            AttributeName: "userId",
+            AttributeName: "id",
             AttributeType: "S",
           }],
           KeySchema: [{
-            AttributeName: "userId",
+            AttributeName: "id",
             KeyType: "HASH"
           }],
           ProvisionedThroughput: {

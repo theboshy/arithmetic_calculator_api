@@ -21,7 +21,7 @@ export const userCreateRecordService = async (user: User, operation: Operation, 
         internalResponse = await userRecord.create();
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }
@@ -42,17 +42,20 @@ export const userGetLastRecord = async (userId: string): Promise<InternalRespons
         internalResponse = lastRecordOfUser;
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }
 
-export const updatetRecord = async (userId: string, properties: any): Promise<InternalResponse> => {
+export const updatetRecord = async (id: string, properties: any): Promise<InternalResponse> => {
     let internalResponse: InternalResponse = new InternalResponse;
     try {
         const dynamodbConection = dynamoDBClient();
         let userRecord = new UserRecord(dynamodbConection);
-        const lastRecordOfUser = await userRecord.update(userId, properties);
+        if (properties.hasOwnProperty("id")) {
+            delete properties.id;
+        }
+        const lastRecordOfUser = await userRecord.update(id, properties);
         internalResponse = lastRecordOfUser;
     } catch (error) {
         internalResponse.error = true;
@@ -68,7 +71,37 @@ export const userRecordGetAllService = async (limit: number = 100, lastEvaluated
         internalResponse = await record.getAll(limit, lastEvaluatedKey);
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
+    }
+    return internalResponse;
+}
+
+export const userRecordGetAllByUserService = async (username: string, limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponsePaginated> => {
+    let internalResponse: InternalResponsePaginated = new InternalResponsePaginated();
+    try {
+        const dynamodbConection = dynamoDBClient()
+        const user = new User(dynamodbConection)
+        const record = new UserRecord(dynamodbConection);
+        const operation = new Operation(dynamodbConection)
+        const userRelation = await user.get(username)
+        internalResponse = await record.getAllByUser(limit, lastEvaluatedKey, userRelation.response.id);
+        if (!internalResponse.error) {
+            const records = internalResponse.response.items;
+            if (records) {
+                records.map(async (record: UserRecord) => {
+                    const recordParsedWithRelations = record;
+                    const operationRelation = await (await operation.get(record.operationId)).response as Operation
+                    if (operationRelation) {
+                        recordParsedWithRelations.userId = operationRelation.type
+                    }
+                });
+            } else {
+
+            }
+        }
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }

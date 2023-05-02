@@ -18,7 +18,7 @@ const userRegister = async (event, context) => {
     }
   } catch (error) {
     internalResponse.status = 503;
-    internalResponse.errorTrace = error;
+    internalResponse.errorTrace = "An internal error occurred";
   }
   return formatJSONResponse(internalResponse.status, { ...internalResponse });
 };

@@ -7,7 +7,7 @@ export const stringGeneratorService = async (url: string = process.env.STRING_GE
         internalResponse = await fetchUrl(url);
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }

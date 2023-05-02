@@ -15,18 +15,18 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
         const { user } = event.decoded;
         const { operationId } = event.queryStringParameters;
         if (!user) {
-            throw new createError.BadGateway(JSON.stringify({ error: `Credentials not found` }));
+            throw new createError.NotFound(JSON.stringify({ error: `Credentials not found` }));
         }
         const userFroMdB = await getUser(user)
         if (userFroMdB.error) {
-            throw new createError.BadGateway(JSON.stringify({ error: `User not found` }));
+            throw new createError.NotFound(JSON.stringify({ error: `User not found` }));
         }
         const lastRecordFromDb = await userGetLastRecord(userFroMdB.response.id)
         const operationFromDb = await operationGetService(operationId);
         if (operationFromDb.error) {
-            throw new createError.BadGateway(JSON.stringify({ error: `Operation not found` }));
+            throw new createError.NotFound(JSON.stringify({ error: `Operation not found` }));
         }
-        if (!lastRecordFromDb.error) {
+        if (!lastRecordFromDb.error && !lastRecordFromDb.error && lastRecordFromDb.response) {
             const result = lastRecordFromDb.response.userBalance - operationFromDb.response.cost;
             if (result < 0) {
                 throw new createError.PaymentRequired(JSON.stringify({ error: `Client don't have enougth credits to perform this request` }));
@@ -42,26 +42,25 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
         const { operationResponse } = event;
         const { operationId } = event.queryStringParameters;
         if (!user) {
-            throw new createError.BadGateway(JSON.stringify({ error: `Credentials not found` }));
+            throw new createError.NotFound(JSON.stringify({ error: `Credentials not found` }));
         }
         const userFroMdB = await getUser(user)
         if (userFroMdB.error) {
-            throw new createError.BadGateway(JSON.stringify({ error: `User not found` }));
+            throw new createError.NotFound(JSON.stringify({ error: `User not found` }));
         }
         const lastRecordFromDb = await userGetLastRecord(userFroMdB.response.id)
         const operationFromDb = await operationGetService(operationId);
         if (operationFromDb.error) {
-            throw new createError.BadGateway(JSON.stringify({ error: `Operation not found` }));
+            throw new createError.NotFound(JSON.stringify({ error: `Operation not found` }));
         }
         let initUserBalance = 0;
         let last = true;
-        if (lastRecordFromDb.errorTrace === "user have no records") {
+        if (lastRecordFromDb.error && lastRecordFromDb.errorTrace === "user have no records") {
             initUserBalance = parseInt(process.env.INITIAL_USER_BALANCE);
             initUserBalance = Math.abs(initUserBalance -= operationFromDb.response.cost);
         } else if (lastRecordFromDb.response.id) {
             let lastUpdate = lastRecordFromDb.response;
             lastUpdate.last = false;
-            delete lastUpdate.userId;
             const result = await updatetRecord(lastRecordFromDb.response.id, lastUpdate)
             if (result.error) {
                 throw new createError.InternalServerError(JSON.stringify({ error: `Can't process request` }));

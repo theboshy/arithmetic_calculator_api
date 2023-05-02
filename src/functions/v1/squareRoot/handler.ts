@@ -20,7 +20,7 @@ const squareRoot = async (event, context) => {
       event.operationResponse = internalResponse.response
     }
   } catch (error) {
-    internalResponse.errorTrace = error;
+    internalResponse.errorTrace = "An internal error occurred";
   }
   return formatJSONResponse(status, {...internalResponse});
 };

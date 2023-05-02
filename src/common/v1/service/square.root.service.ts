@@ -7,7 +7,7 @@ export const squareRootService = (numberA: number): InternalResponse => {
         internalResponse = arithmeticOperationResolver(numberA, null, "squareRoot");
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }

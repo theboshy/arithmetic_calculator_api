@@ -14,7 +14,7 @@ const stringGenerator = async (event, context) => {
     status = 200
     event.operationResponse = internalResponse.response
   } catch (error) {
-    internalResponse.errorTrace = error;
+    internalResponse.errorTrace = "An internal error occurred";
   }
   return formatJSONResponse(status, {...internalResponse});
 };

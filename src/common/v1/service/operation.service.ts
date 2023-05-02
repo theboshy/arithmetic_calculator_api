@@ -10,7 +10,7 @@ export const operationBatchWriteService = async (operations: [Operation]): Promi
         internalResponse = await operation.batchWriteItem(operations);
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }
@@ -22,7 +22,7 @@ export const operationGetAllService = async (limit: number = 100, lastEvaluatedK
         internalResponse = await operation.getAll(limit, lastEvaluatedKey);
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }
@@ -34,7 +34,7 @@ export const operationGetService = async (operationId: string): Promise<Internal
         internalResponse = await operation.get(operationId);
     } catch (error) {
         internalResponse.error = true;
-        internalResponse.errorTrace = error;
+        internalResponse.errorTrace = "An internal error occurred";
     }
     return internalResponse;
 }

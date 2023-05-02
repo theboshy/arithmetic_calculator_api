@@ -26,7 +26,7 @@ const operationGetAll = async (event, context) => {
       internalResponse.status = 200;
     }
   } catch (error) {
-    internalResponse.errorTrace = error;
+    internalResponse.errorTrace = "An internal error occurred";
   }
   return formatJSONResponse(internalResponse.status, { ...internalResponse });
 };
