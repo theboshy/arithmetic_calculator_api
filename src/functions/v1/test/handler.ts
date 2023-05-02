@@ -11,8 +11,10 @@ const test: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event, co
   let errorHandler = {};
   //console.log(process.env.IS_OFFLINE)
   try {
-    results = await MysqlInstance.getInstance().query('SELECT * FROM test1')
-    await MysqlInstance.getInstance().end() 
+    if (process.env.IS_OFFLINE) {
+      results = await MysqlInstance.getInstance().query('SELECT * FROM test1')
+      await MysqlInstance.getInstance().end()
+    }
   } catch (error) {
     errorHandler = error
   }

@@ -16,6 +16,7 @@ const subtraction = async (event, context) => {
     internalResponse = subtractionService(parseFloat(numberA), parseFloat(numberB));
     if (!internalResponse.error) {
       status = 200;
+      event.operationResponse = internalResponse.response
     }
   } catch (error) {
     internalResponse.errorTrace = error;

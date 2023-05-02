@@ -12,6 +12,7 @@ const stringGenerator = async (event, context) => {
   try {
     internalResponse = await stringGeneratorService()
     status = 200
+    event.operationResponse = internalResponse.response
   } catch (error) {
     internalResponse.errorTrace = error;
   }

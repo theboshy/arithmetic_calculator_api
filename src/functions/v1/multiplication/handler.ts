@@ -17,6 +17,7 @@ const multiplication = async (event, context) => {
     internalResponse = multiplicationService(parseFloat(numberA), parseFloat(numberB));
     if (!internalResponse.error) {
       status = 200;
+      event.operationResponse = internalResponse.response
     }
   } catch (error) {
     internalResponse.errorTrace = error;

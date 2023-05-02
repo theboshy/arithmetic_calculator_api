@@ -6,7 +6,7 @@ import createError from 'http-errors';
 import { getUser } from 'src/common/v1/service/user.service';
 import { operationGetService } from 'src/common/v1/service/operation.service';
 
-//todo: better to reuse the event varaibles and loaded from database (declare in before use in before and after)
+//todo: better to reuse the event variables and loaded from database (declare in before use in before and after)
 export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGatewayProxyEvent, APIGatewayProxyResult> => {
     const before: middy.MiddlewareFn<CustomAPIGatewayProxyEvent, APIGatewayProxyResult> = async (
         request
@@ -39,6 +39,7 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
     ): Promise<void> => {
         const { event } = request;
         const { user } = event.decoded;
+        const { operationResponse } = event;
         const { operationId } = event.queryStringParameters;
         if (!user) {
             throw new createError.BadGateway(JSON.stringify({ error: `Credentials not found` }));
@@ -52,7 +53,6 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
         if (operationFromDb.error) {
             throw new createError.BadGateway(JSON.stringify({ error: `Operation not found` }));
         }
-        let newRecordAmount = 0;
         let initUserBalance = 0;
         let last = true;
         if (lastRecordFromDb.errorTrace === "user have no records") {
@@ -68,7 +68,7 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
             }
             initUserBalance = Math.abs(lastRecordFromDb.response.userBalance -= operationFromDb.response.cost);
         }
-        const result = await userCreateRecordService(userFroMdB.response, operationFromDb.response, newRecordAmount, initUserBalance, last);
+        const result = await userCreateRecordService(userFroMdB.response, operationFromDb.response, operationResponse, initUserBalance, last);
         if (result.error) {
             throw new createError.Unauthorized(JSON.stringify({ error: `Can't process request` }));
         }

@@ -38,8 +38,11 @@ export class Operation implements OperationInterface {
             if (lastEvaluatedKey) {
                 params["ExclusiveStartKey"] = {id: lastEvaluatedKey};
             }
-            const operations = await this.docClient.scan(params).promise()
-            return { error: false, response: operations }
+            const { Items } = await this.docClient.scan(params).promise()
+            if (!Items || Items.length === 0) {
+                return { error: true, errorTrace: "operations is void" }
+            }
+            return { error: false, response: Items as [Operation] }
         } catch (error) {
             return { error: true, errorTrace: error }
         }

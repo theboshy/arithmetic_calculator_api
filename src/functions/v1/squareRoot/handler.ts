@@ -17,6 +17,7 @@ const squareRoot = async (event, context) => {
     internalResponse = squareRootService(parseFloat(numberA));
     if (!internalResponse.error) {
       status = 200;
+      event.operationResponse = internalResponse.response
     }
   } catch (error) {
     internalResponse.errorTrace = error;
