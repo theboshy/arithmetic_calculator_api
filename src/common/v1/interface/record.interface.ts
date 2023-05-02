@@ -15,5 +15,6 @@ export interface RecordInterface {
     create(user: User, operation: Operation, operationResponse: any): Promise<InternalResponseInterface>
     getLast(userId: string): Promise<InternalResponseInterface>;
     update(userId: string, properties: Map<String, any>): Promise<InternalResponseInterface>
+    getAll(limit: number, lastEvalutedKey: string): Promise<InternalResponsePaginatedInterface>
     toDocument(): any
 }

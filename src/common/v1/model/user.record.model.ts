@@ -1,6 +1,6 @@
 import { RecordInterface } from "../interface/record.interface";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { InternalResponseInterface } from "../interface/internal.response";
+import { InternalResponseInterface, InternalResponsePaginatedInterface } from "../interface/internal.response";
 import { User } from "./user.model";
 
 export class UserRecord implements RecordInterface {
@@ -16,6 +16,25 @@ export class UserRecord implements RecordInterface {
 
     constructor(private docClient: DocumentClient) { //should use dependency injection instead
         this.docClient = docClient;
+    }
+
+    async getAll(limit: number = 100, lastEvaluatedKey: string): Promise<InternalResponsePaginatedInterface> {
+        try {
+            let params = {
+                TableName: this.tableName,
+                Limit: limit,
+            };
+            if (lastEvaluatedKey) {
+                params["ExclusiveStartKey"] = { id: lastEvaluatedKey };
+            }
+            const { Items, LastEvaluatedKey } = await this.docClient.scan(params).promise()
+            if (!Items || Items.length === 0) {
+                return { error: true, errorTrace: "user records is void" }
+            }
+            return { error: false, response: { items: Items as [UserRecord], lastEvaluatedKey: LastEvaluatedKey } }
+        } catch (error) {
+            return { error: true, errorTrace: error }
+        }
     }
 
     async update(userId: string, properties: any): Promise<InternalResponseInterface> {
@@ -86,7 +105,7 @@ export class UserRecord implements RecordInterface {
                 userId: this.userId,
                 amount: this.amount,
                 userBalance: this.userBalance,
-                operation_response: this.operationResponse,
+                operationResponse: this.operationResponse,
                 date: this.date,
                 last: this.last
             };

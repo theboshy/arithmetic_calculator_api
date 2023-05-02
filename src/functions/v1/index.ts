@@ -145,12 +145,25 @@ export const userLoginHandler = {
 };
 
 export const operationGetAllHandler = {
-  handler: `${handlerPath(__dirname)}/operation.get.all/handler.operationGetAllHandler`,
+  handler: `${handlerPath(__dirname)}/operation.all/handler.operationGetAllHandler`,
   events: [
     {
       http: {
         method: 'get',
         path: 'v1/operation',
+      },
+    },
+  ],
+};
+
+
+export const userRecordGetAllHandler = {
+  handler: `${handlerPath(__dirname)}/user.record.all/handler.userRecordGetAllHandler`,
+  events: [
+    {
+      http: {
+        method: 'get',
+        path: 'v1/userRecord',
       },
     },
   ],

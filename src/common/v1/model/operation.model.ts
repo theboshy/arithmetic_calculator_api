@@ -1,5 +1,5 @@
 import { PropertiesRequestItems, convertToRequestItems } from "../../../libs/dynamo.request.resolver/properties.to.dynamo.request";
-import { InternalResponseInterface } from "../interface/internal.response";
+import { InternalResponseInterface, InternalResponsePaginatedInterface } from "../interface/internal.response";
 import { OperationInterface } from "../interface/operation.interface";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
@@ -14,7 +14,7 @@ export class Operation implements OperationInterface {
     }
 
     async get(id: string): Promise<InternalResponseInterface> {
-       try {
+        try {
             const params = {
                 TableName: this.tableName,
                 Key: { id },
@@ -29,20 +29,20 @@ export class Operation implements OperationInterface {
         }
     }
 
-    async getAll(limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponseInterface> {
+    async getAll(limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponsePaginatedInterface> {
         try {
             let params = {
                 TableName: this.tableName,
                 Limit: limit,
             };
             if (lastEvaluatedKey) {
-                params["ExclusiveStartKey"] = {id: lastEvaluatedKey};
+                params["ExclusiveStartKey"] = { id: lastEvaluatedKey };
             }
-            const { Items } = await this.docClient.scan(params).promise()
+            const { Items, LastEvaluatedKey } = await this.docClient.scan(params).promise()
             if (!Items || Items.length === 0) {
                 return { error: true, errorTrace: "operations is void" }
             }
-            return { error: false, response: Items as [Operation] }
+            return { error: false, response: { items: Items as [Operation], lastEvaluatedKey: LastEvaluatedKey } }
         } catch (error) {
             return { error: true, errorTrace: error }
         }

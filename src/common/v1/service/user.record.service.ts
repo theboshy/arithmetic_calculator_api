@@ -1,5 +1,5 @@
 import { dynamoDBClient } from "../../../../src/common/database/dynamo.db";
-import { InternalResponse } from "../model/internal.response";
+import { InternalResponse, InternalResponsePaginated } from "../model/internal.response";
 import { UserRecord } from "../model/user.record.model";
 import { User } from "../model/user.model";
 import { Operation } from "../model/operation.model";
@@ -54,6 +54,18 @@ export const updatetRecord = async (userId: string, properties: any): Promise<In
         let userRecord = new UserRecord(dynamodbConection);
         const lastRecordOfUser = await userRecord.update(userId, properties);
         internalResponse = lastRecordOfUser;
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = error;
+    }
+    return internalResponse;
+}
+
+export const userRecordGetAllService = async (limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponsePaginated> => {
+    let internalResponse: InternalResponsePaginated = new InternalResponsePaginated;
+    try {
+        const record = new UserRecord(dynamoDBClient());
+        internalResponse = await record.getAll(limit, lastEvaluatedKey);
     } catch (error) {
         internalResponse.error = true;
         internalResponse.errorTrace = error;
