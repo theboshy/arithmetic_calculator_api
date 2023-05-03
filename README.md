@@ -27,6 +27,8 @@ Clone the Project
 # Configuration
 
 ## Create an AwsConfig.json file in the root directory with the following configuration:
+> see [how to get your access keys](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
+
 ```json
 {
   "accessKeyId": "<your_access_key_id>",
