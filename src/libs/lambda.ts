@@ -4,10 +4,11 @@ import httpErrorHandler from '@middy/http-error-handler'
 import cors from '@middy/http-cors';
 
 const corsOptions = {
-  origins: JSON.parse(process.env.ALLOWED_ORIGINS)
+  origins: [process.env.ALLOWED_ORIGINS],
+  headers: 'x-access-token,Content-Type,Authorization',
 }
 
 export const middyfy = (handler) => {
-  const middyHandler = middy(handler).use(middyJsonBodyParser()).use(httpErrorHandler()).use(cors(corsOptions))
+  const middyHandler = middy(handler).use(cors(corsOptions)).use(middyJsonBodyParser()).use(httpErrorHandler())
   return middyHandler;
 }
