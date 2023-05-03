@@ -6,7 +6,7 @@ import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { userRegisterSchema } from 'src/common/v1/schemas/user.schema';
 import { userRegisterService } from 'src/common/v1/service/user.service';
 
-const userRegister = async (event, context) => {
+const userRegister = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false
   //--
   let internalResponse: InternalResponse = new InternalResponse;

@@ -18,6 +18,9 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
+    httpApi: {
+      cors: true
+    },
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -28,19 +31,47 @@ const serverlessConfiguration: AWS = {
     },
     iam: {
       role: {
-        statements: [{
-          Effect: "Allow",
-          Action: [
-            "dynamodb:DescribeTable",
-            "dynamodb:Query",
-            "dynamodb:Scan",
-            "dynamodb:GetItem",
-            "dynamodb:PutItem",
-            "dynamodb:UpdateItem",
-            "dynamodb:DeleteItem",
-          ],
-          Resource: "arn:aws:dynamodb:us-west-2:*:table/arithmeticdb",
-        }],
+        statements: [
+          {
+            Effect: "Allow",
+            Action: [
+              "dynamodb:DescribeTable",
+              "dynamodb:Query",
+              "dynamodb:Scan",
+              "dynamodb:GetItem",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+            ],
+            Resource: "arn:aws:dynamodb:us-east-1:*:table/Users",
+          },
+          {
+            Effect: "Allow",
+            Action: [
+              "dynamodb:DescribeTable",
+              "dynamodb:Query",
+              "dynamodb:Scan",
+              "dynamodb:GetItem",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+            ],
+            Resource: "arn:aws:dynamodb:us-east-1:*:table/UserRecord",
+          },
+          {
+            Effect: "Allow",
+            Action: [
+              "dynamodb:DescribeTable",
+              "dynamodb:Query",
+              "dynamodb:Scan",
+              "dynamodb:GetItem",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+            ],
+            Resource: "arn:aws:dynamodb:us-east-1:*:table/Operation",
+          }
+        ],
       },
     },
   },
@@ -119,7 +150,7 @@ const serverlessConfiguration: AWS = {
         inMemory: true,
         migrate: true,
       },
-      stages: "dev"
+      stages: ["production", "dev"]
     },
     esbuild: {
       bundle: true,
