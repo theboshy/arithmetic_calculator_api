@@ -17,3 +17,4 @@ AwsConfig.json
 **/src/common/**/*.js
 
 lib/
+env
