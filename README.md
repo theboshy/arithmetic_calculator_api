@@ -117,6 +117,9 @@ this going to generate a token that you must use to perform all operation
     "response": "<jwt_token>"
 }
 ```
+> note: tokens by default are being created with a lifespan of 1 hour, after the token expired you will 
+> need to generate a new one in order to continue using the API
+
 this token have to be sended in the headers of the operation that you want to perform with this header name
 ```bash
   x-access-token: <jwt_token>
