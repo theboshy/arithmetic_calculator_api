@@ -56,7 +56,7 @@ Wait until the console shows the endpoints and the database says it's up.
 ```bash
   npm run seed:operations
 ```
-this goin to create the operation that can be peformed in this way
+this going to create the operations that can be peformed in this way
 ```json
 {
         "id": "2e630e6d-7500-4017-b5b8-2750b853992f",
