@@ -37,9 +37,10 @@ Clone the Project
 }
 ```
 
-## Create a **.env** file in the root folder of the project with your jwt secret
+## Create a **.env** file in the root folder of the project with your jwt secret and allowed origins
 ```bash
   JWT_SECRET=<secret>
+  ALLOWED_ORIGINS=["<your_allowed_origin>"]
 ```
 
 ## Install a local DynamoDB with:
