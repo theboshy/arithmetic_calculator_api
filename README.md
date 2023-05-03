@@ -110,7 +110,7 @@ this going to generate a token that you must use to perform all operation
 }
 ```
 this token have to be sended in the headers of the operation that you want to perform with this header name
-```json
+```bash
   x-access-token: <jwt_token>
 ```
 
