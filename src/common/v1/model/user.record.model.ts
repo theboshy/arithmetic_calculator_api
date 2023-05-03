@@ -18,7 +18,6 @@ export class UserRecord implements RecordInterface {
     }
 
     async getAllByUser(limit: number = 100, lastEvaluatedKey: string, userId: string): Promise<InternalResponsePaginatedInterface> {
-        console.log("getAllByUser id: " + userId);
         try {
             let params = {
                 TableName: this.tableName,
@@ -76,8 +75,6 @@ export class UserRecord implements RecordInterface {
                 entries--;
             }
             const userRecordDocument = this.toDocument();
-            console.log("docuemnto persit === >", properties)
-            console.log("userids === >", id)
             const params = {
                 TableName: this.tableName,
                 Key: { id },

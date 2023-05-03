@@ -4,6 +4,7 @@ import { UserRecord } from "../model/user.record.model";
 import { User } from "../model/user.model";
 import { Operation } from "../model/operation.model";
 import { v4 } from "uuid";
+import { InternalResponsePaginatedInterface } from "../interface/internal.response";
 
 export const userCreateRecordService = async (user: User, operation: Operation, operationResponse: any, balance?: number, last?: boolean): Promise<InternalResponse> => {
     let internalResponse: InternalResponse = new InternalResponse;
@@ -76,7 +77,11 @@ export const userRecordGetAllService = async (limit: number = 100, lastEvaluated
     return internalResponse;
 }
 
-export const userRecordGetAllByUserService = async (username: string, limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponsePaginated> => {
+const realationStore: Record<string, string> = {
+
+};
+
+export const userRecordGetAllByUserService = async (username: string, limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponsePaginatedInterface> => {
     let internalResponse: InternalResponsePaginated = new InternalResponsePaginated();
     try {
         const dynamodbConection = dynamoDBClient()
@@ -85,19 +90,31 @@ export const userRecordGetAllByUserService = async (username: string, limit: num
         const operation = new Operation(dynamodbConection)
         const userRelation = await user.get(username)
         internalResponse = await record.getAllByUser(limit, lastEvaluatedKey, userRelation.response.id);
+        let responseItems;
         if (!internalResponse.error) {
             const records = internalResponse.response.items;
-            if (records) {
-                records.map(async (record: UserRecord) => {
+            if (records.length > 0) {
+                const relationMapper = records.map(async (record: UserRecord) => {
                     const recordParsedWithRelations = record;
-                    const operationRelation = await (await operation.get(record.operationId)).response as Operation
-                    if (operationRelation) {
-                        recordParsedWithRelations.userId = operationRelation.type
+                    if (realationStore[recordParsedWithRelations.id]) {
+                        recordParsedWithRelations.operationId = realationStore[recordParsedWithRelations.id]
+                    } else {
+                        const operationRelation = await (await operation.get(record.operationId)).response as Operation
+                        if (operationRelation) {
+                            recordParsedWithRelations.operationId = operationRelation.type
+                            realationStore[recordParsedWithRelations.id] = operationRelation.type
+                        }
                     }
+                    return recordParsedWithRelations;
                 });
+                responseItems = await Promise.all(relationMapper);
             } else {
-
+                internalResponse.error = true;
+                internalResponse.errorTrace = "An internal error occurred";
             }
+        }
+        if (responseItems) {
+            internalResponse.response.items = responseItems;
         }
     } catch (error) {
         internalResponse.error = true;
