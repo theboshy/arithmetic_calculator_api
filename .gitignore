@@ -18,3 +18,4 @@ AwsConfig.json
 
 lib/
 env
+.env.production

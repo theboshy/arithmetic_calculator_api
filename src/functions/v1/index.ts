@@ -1,11 +1,6 @@
 import { handlerPath } from '@libs/handler-resolver';
 import schema from '../../common/v1/schemas/schema';
-import { configDotEnv } from 'dotenv.config';
 import { parseStringToArray } from '@libs/strings/strings.utils';
-
-(async () => {
-  await configDotEnv();
-})()
 
 export const test = {
   handler: `${handlerPath(__dirname)}/test/handler.testHandler`,
