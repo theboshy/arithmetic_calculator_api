@@ -5,8 +5,11 @@ import cors from '@middy/http-cors';
 
 const corsOptions = {
   origins: [process.env.ALLOWED_ORIGINS],
-  headers: 'x-access-token,Content-Type,Authorization',
+  headers: process.env.ALLOWED_HEADERS,
+  requestmethods: 'GET,POST,OPTIONS'
 }
+
+
 
 export const middyfy = (handler) => {
   const middyHandler = middy(handler).use(cors(corsOptions)).use(middyJsonBodyParser()).use(httpErrorHandler())

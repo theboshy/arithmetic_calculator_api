@@ -1,6 +1,11 @@
 import { handlerPath } from '@libs/handler-resolver';
 import schema from '../../common/v1/schemas/schema';
-import { requestValidationSchema } from 'src/common/v1/schemas/arithmetic.operation.schema';
+import { configDotEnv } from 'dotenv.config';
+import { parseStringToArray } from '@libs/strings/strings.utils';
+
+(async () => {
+  await configDotEnv();
+})()
 
 export const test = {
   handler: `${handlerPath(__dirname)}/test/handler.testHandler`,
@@ -13,7 +18,7 @@ export const test = {
           schemas: {
             'application/json': schema,
           },
-        },
+        }
       },
     },
   ],
@@ -27,11 +32,10 @@ export const addition = {
       http: {
         method: 'get',
         path: 'v1/addition',
-        request: {
-          schemas: {
-            'application/json': requestValidationSchema,
-          },
-        },
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],
@@ -44,11 +48,10 @@ export const subtraction = {
       http: {
         method: 'get',
         path: 'v1/subtraction',
-        request: {
-          schemas: {
-            'application/json': requestValidationSchema,
-          },
-        },
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],
@@ -61,11 +64,10 @@ export const multiplication = {
       http: {
         method: 'get',
         path: 'v1/multiplication',
-        request: {
-          schemas: {
-            'application/json': requestValidationSchema,
-          },
-        },
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],
@@ -78,11 +80,10 @@ export const division = {
       http: {
         method: 'get',
         path: 'v1/division',
-        request: {
-          schemas: {
-            'application/json': requestValidationSchema,
-          },
-        },
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],
@@ -96,11 +97,10 @@ export const squareRoot = {
       http: {
         method: 'get',
         path: 'v1/squareRoot',
-        request: {
-          schemas: {
-            'application/json': requestValidationSchema,
-          },
-        },
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],
@@ -113,6 +113,10 @@ export const stringGenerator = {
       http: {
         method: 'get',
         path: 'v1/stringGenerator',
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],
@@ -139,6 +143,9 @@ export const userLoginHandler = {
       http: {
         method: 'post',
         path: 'v1/login',
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+        }
       },
     },
   ],
@@ -151,6 +158,10 @@ export const operationGetAllHandler = {
       http: {
         method: 'get',
         path: 'v1/operation',
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],
@@ -164,6 +175,10 @@ export const userRecordGetAllHandler = {
       http: {
         method: 'get',
         path: 'v1/userRecord',
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
       },
     },
   ],

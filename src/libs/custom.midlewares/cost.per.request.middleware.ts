@@ -63,13 +63,13 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
             lastUpdate.last = false;
             const result = await updatetRecord(lastRecordFromDb.response.id, lastUpdate)
             if (result.error) {
-                throw new createError.InternalServerError(JSON.stringify({ error: `Can't process request` }));
+                throw new createError.Conflict(JSON.stringify({ error: `Can't process request` }));
             }
             initUserBalance = Math.abs(lastRecordFromDb.response.userBalance -= operationFromDb.response.cost);
         }
         const result = await userCreateRecordService(userFroMdB.response, operationFromDb.response, operationResponse, initUserBalance, last);
         if (result.error) {
-            throw new createError.Unauthorized(JSON.stringify({ error: `Can't process request` }));
+            throw new createError.Conflict(JSON.stringify({ error: `Can't process request` }));
         }
     }
     return {

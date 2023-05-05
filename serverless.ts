@@ -5,6 +5,7 @@ import {
   userLoginHandler, operationGetAllHandler, userRecordGetAllHandler
 } from '@functions/v1';
 import { configDotEnv } from 'dotenv.config'
+import { parseStringToArray } from '@libs/strings/strings.utils';
 
 (async () => {
   await configDotEnv();
@@ -18,6 +19,12 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
+    httpApi: {
+      cors: {
+        allowedOrigins: [process.env.ALLOWED_ORIGINS],
+        allowedHeaders: parseStringToArray(process.env.ALLOWED_HEADERS)
+      },
+    },
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,

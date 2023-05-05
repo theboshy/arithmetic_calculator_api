@@ -11,10 +11,12 @@ const userRegister = async (event: any, context: any) => {
   //--
   let internalResponse: InternalResponse = new InternalResponse;
   try {
-    const { username, password } = event.body;
-    internalResponse = await userRegisterService(username, password);
-    if (!internalResponse.error) {
-      internalResponse.status = 201;
+    if (process.env.IS_OFFLINE) {
+      const { username, password } = event.body;
+      internalResponse = await userRegisterService(username, password);
+      if (!internalResponse.error) {
+        internalResponse.status = 201;
+      }
     }
   } catch (error) {
     internalResponse.status = 503;
