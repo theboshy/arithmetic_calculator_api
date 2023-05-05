@@ -1,5 +1,5 @@
 import { CustomAPIGatewayProxyEvent } from '@libs/api-gateway';
-import { jwtVerify } from '@libs/jwt/jwt.handler';
+import { jwtVerify } from '../../libs/jwt/jwt.handler';
 import middy from '@middy/core';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import createError from 'http-errors';

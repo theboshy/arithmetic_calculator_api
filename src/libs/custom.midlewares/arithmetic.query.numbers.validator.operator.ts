@@ -2,8 +2,8 @@ import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { validate } from 'jsonschema';
 import createError from 'http-errors';
-import { requestValidationSchema, requestValidationSchemaSquareRoot } from 'src/common/v1/schemas/arithmetic.operation.schema';
-import { MATCH_POSITIVE_NUMBERS, regexMatcher } from '@libs/regex.validator/regex.validator';
+import { requestValidationSchema, requestValidationSchemaSquareRoot } from '../../common/v1/schemas/arithmetic.operation.schema';
+import { MATCH_POSITIVE_NUMBERS, regexMatcher } from '../../libs/regex.validator/regex.validator';
 
 
 

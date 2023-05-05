@@ -1,11 +1,9 @@
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { InternalResponse, InternalResponsePaginated } from 'src/common/v1/model/internal.response';
+import { InternalResponsePaginated } from 'src/common/v1/model/internal.response';
 import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
 import { userRecordGetAllByUserService } from 'src/common/v1/service/user.record.service';
-import { userRecordRequestSchema } from 'src/common/v1/schemas/user.record.schema';
-import { proxySchemaQueryValidator } from '@libs/custom.midlewares/proxy.schema.query.validator';
-import { InternalResponseInterface, InternalResponsePaginatedInterface } from 'src/common/v1/interface/internal.response';
+import { InternalResponsePaginatedInterface } from 'src/common/v1/interface/internal.response';
 
 /**
  * 

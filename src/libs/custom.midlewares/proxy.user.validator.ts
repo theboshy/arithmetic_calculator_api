@@ -1,7 +1,7 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { InternalResponse } from 'src/common/v1/model/internal.response';
-import { getUser, userLoginService } from 'src/common/v1/service/user.service';
+import { InternalResponse } from '../../common/v1/model/internal.response';
+import { getUser, userLoginService } from '../../common/v1/service/user.service';
 import createError from 'http-errors';
 
 export const verifyUserLoginMiddleware = (): middy.MiddlewareObj<APIGatewayProxyEvent, APIGatewayProxyResult> => {

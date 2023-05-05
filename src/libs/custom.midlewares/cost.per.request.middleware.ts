@@ -1,10 +1,10 @@
 import { CustomAPIGatewayProxyEvent } from '@libs/api-gateway';
 import middy from '@middy/core';
 import { APIGatewayProxyResult } from 'aws-lambda';
-import { updatetRecord, userCreateRecordService, userGetLastRecord } from 'src/common/v1/service/user.record.service';
+import { updatetRecord, userCreateRecordService, userGetLastRecord } from '../../common/v1/service/user.record.service';
 import createError from 'http-errors';
-import { getUser } from 'src/common/v1/service/user.service';
-import { operationGetService } from 'src/common/v1/service/operation.service';
+import { getUser } from '../../common/v1/service/user.service';
+import { operationGetService } from '../../common/v1/service/operation.service';
 
 //todo: better to reuse the event variables and loaded from database (declare in before use in before and after)
 export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGatewayProxyEvent, APIGatewayProxyResult> => {
@@ -15,7 +15,7 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
         const { user } = event.decoded;
         const { operationId } = event.queryStringParameters;
         if (!user) {
-            throw new createError.NotFound(JSON.stringify({ error: `Credentials not found` }));
+            throw new createError.BadRequest(JSON.stringify({ error: `user is required` }));
         }
         const userFroMdB = await getUser(user)
         if (userFroMdB.error) {
@@ -42,7 +42,7 @@ export const costPerRequestMiddleware = (): middy.MiddlewareObj<CustomAPIGateway
         const { operationResponse } = event;
         const { operationId } = event.queryStringParameters;
         if (!user) {
-            throw new createError.NotFound(JSON.stringify({ error: `Credentials not found` }));
+            throw new createError.BadRequest(JSON.stringify({ error: `user is required` }));
         }
         const userFroMdB = await getUser(user)
         if (userFroMdB.error) {

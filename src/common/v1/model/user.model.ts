@@ -63,7 +63,7 @@ export class User implements UserInterface {
             return { error: true, errorTrace: error }
         }
     }
-    
+
     async create(): Promise<InternalResponseInterface> {
         try {
             const userDocument = this.toDocument();
@@ -74,7 +74,6 @@ export class User implements UserInterface {
             delete userDocument.password;
             return { error: false, response: userDocument.username };
         } catch (error) {
-            console.log("error datatabase", error);
             return { error: true, errorTrace: error };
         }
     }

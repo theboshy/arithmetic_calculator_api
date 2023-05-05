@@ -10,7 +10,7 @@
     "start:offline": "serverless offline start --stage dev",
     "seed:operations": "npx ts-node src/common/seeds/operation.seed/operation.seed.ts",
     "deploy": "serverless deploy --stage production --region us-east-1",
-    "test": "jest --no-cache"
+    "test": "jest --no-cache --forceExit"
   },
   "engines": {
     "node": ">=14.15.0"
@@ -33,6 +33,7 @@
     "@babel/preset-env": "^7.21.4",
     "@middy/validator": "^4.3.1",
     "@serverless/typescript": "^3.29.0",
+    "@shelf/jest-dynamodb": "^3.4.1",
     "@types/aws-lambda": "^8.10.71",
     "@types/bcryptjs": "^2.4.2",
     "@types/jest": "^29.5.1",

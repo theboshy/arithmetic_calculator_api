@@ -10,41 +10,44 @@ import fetch from "node-fetch";
  * @returns maximun waits before killing the request
  */
 export const fetchUrl = async (url: string, options?: any, responseType: string = "plain", timeout: number = 5000): Promise<InternalResponseInterface> => {
-    const response: InternalResponseInterface = {
-      error: false,
-      errorTrace: null,
-      response: null,
-    };
-  
-    try {
-      const fetchPromise = fetch(url, options);
-      const timeoutPromise = new Promise<InternalResponseInterface>((reject) => {
-        const response: InternalResponseInterface = {
-          error: true,
-          errorTrace: null,
-          response: "Timeout",
-        };
-        setTimeout(() => reject(response), timeout);
-      });
-  
-      const fetchResponse = await Promise.race([fetchPromise, timeoutPromise]);
-      let data;
-      switch(responseType) {
-        case "json": {
-            data = await fetchResponse.json();
-            break;
-        }
-        case "plain": { 
-            data = await fetchResponse.text();
-            break;
-        }
-      }
-      response.response = data;
-    } catch (error) {
-      response.error = true;
-      response.errorTrace = error.message;
-    }
-  
-    return response;
+  const response: InternalResponseInterface = {
+    error: false,
+    errorTrace: null,
+    response: null,
   };
-  
+
+  try {
+    const fetchPromise = fetch(url, options);
+    let timeoutId;
+    const timeoutPromise = new Promise<InternalResponseInterface>((reject) => {
+      const response: InternalResponseInterface = {
+        error: true,
+        errorTrace: null,
+        response: "Timeout",
+      };
+      timeoutId = setTimeout(() => reject(response), timeout);
+    });
+
+    const fetchResponse = await Promise.race([fetchPromise, timeoutPromise]);
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    let data;
+    switch (responseType) {
+      case "json": {
+        data = await fetchResponse.json();
+        break;
+      }
+      case "plain": {
+        data = await fetchResponse.text();
+        break;
+      }
+    }
+    response.response = data;
+  } catch (error) {
+    response.error = true;
+    response.errorTrace = error.message;
+  }
+
+  return response;
+};

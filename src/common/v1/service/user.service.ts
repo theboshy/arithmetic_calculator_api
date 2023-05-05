@@ -1,4 +1,4 @@
-import { dynamoDBClient } from "src/common/database/dynamo.db";
+import { dynamoDBClient } from "../../database/dynamo.db";
 import { InternalResponseInterface } from "../interface/internal.response";
 import { InternalResponse } from "../model/internal.response";
 import { User } from "../model/user.model";

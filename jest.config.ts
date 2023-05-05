@@ -13,5 +13,6 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/*.test.(ts|tsx)'],
   collectCoverageFrom: ['src/**/*.{ts,tsx}'],
-  preset: 'ts-jest',
+  preset: '@shelf/jest-dynamodb',
+  openHandlesTimeout: 0
 };

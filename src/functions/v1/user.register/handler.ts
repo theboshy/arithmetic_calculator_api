@@ -1,6 +1,6 @@
 import { formatJSONResponse } from '@libs/api-gateway';
-import { proxySchemaValidator } from '@libs/custom.midlewares/proxy.schema.validation';
-import { verifyUserRegisterMiddleware } from '@libs/custom.midlewares/verify.user.middleware';
+import { proxySchemaValidator } from '@libs/custom.midlewares/proxy.schema.validator';
+import { verifyUserRegisterMiddleware } from '@libs/custom.midlewares/proxy.user.validator';
 import { middyfy } from '@libs/lambda';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
 import { userRegisterSchema } from 'src/common/v1/schemas/user.schema';
