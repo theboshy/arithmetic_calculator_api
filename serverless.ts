@@ -4,12 +4,7 @@ import {
   test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler,
   userLoginHandler, operationGetAllHandler, userRecordGetAllHandler
 } from '@functions/v1';
-import { configDotEnv } from 'dotenv.config'
 import { parseStringToArray } from '@libs/strings/strings.utils';
-
-(async () => {
-  await configDotEnv();
-})()
 
 const serverlessConfiguration: AWS = {
   useDotenv: true,
