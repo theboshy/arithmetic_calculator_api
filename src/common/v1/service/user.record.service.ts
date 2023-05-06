@@ -19,6 +19,7 @@ export const userCreateRecordService = async (user: User, operation: Operation, 
         userRecord.operationResponse = operationResponse
         userRecord.userBalance = balance;
         userRecord.last = last;
+        userRecord.deleted = false;
         internalResponse = await userRecord.create();
     } catch (error) {
         internalResponse.error = true;
@@ -40,6 +41,21 @@ export const userGetLastRecord = async (userId: string): Promise<InternalRespons
         const dynamodbConection = dynamoDBClient();
         let userRecord = new UserRecord(dynamodbConection);
         const lastRecordOfUser = await userRecord.getLast(userId);
+        internalResponse = lastRecordOfUser;
+    } catch (error) {
+        internalResponse.error = true;
+        internalResponse.errorTrace = "An internal error occurred";
+    }
+    return internalResponse;
+}
+
+
+export const userGetRecord = async (userRecordId: string): Promise<InternalResponse> => {
+    let internalResponse: InternalResponse = new InternalResponse;
+    try {
+        const dynamodbConection = dynamoDBClient();
+        let userRecord = new UserRecord(dynamodbConection);
+        const lastRecordOfUser = await userRecord.get(userRecordId);
         internalResponse = lastRecordOfUser;
     } catch (error) {
         internalResponse.error = true;

@@ -1,7 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 import {
   test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler,
-  userLoginHandler, operationGetAllHandler, userRecordGetAllHandler
+  userLoginHandler, operationGetAllHandler, userRecordGetAllHandler, userRecordDeleteHandler
 } from '@functions/v1';
 import { parseStringToArray } from '@libs/strings/strings.utils';
 import { configDotEnv } from "./src/libs/env.resolver/env.config"
@@ -144,7 +144,7 @@ const serverlessConfiguration: AWS = {
   functions: {
     test, addition, subtraction, division, multiplication,
     squareRoot, stringGenerator, userRegisterHandler, userLoginHandler,
-    operationGetAllHandler, userRecordGetAllHandler
+    operationGetAllHandler, userRecordGetAllHandler, userRecordDeleteHandler
   },
   package: { individually: true },
   custom: {

@@ -183,3 +183,20 @@ export const userRecordGetAllHandler = {
     },
   ],
 };
+
+
+export const userRecordDeleteHandler = {
+  handler: `${handlerPath(__dirname)}/user.record.delete/handler.userRecordDeleteHandler`,
+  events: [
+    {
+      http: {
+        method: 'put',
+        path: 'v1/userRecord',
+        cors: {
+          origins: [process.env.ALLOWED_ORIGINS],
+          headers: parseStringToArray(process.env.ALLOWED_HEADERS)
+        }
+      },
+    },
+  ],
+};

@@ -11,10 +11,27 @@ export class UserRecord implements RecordInterface {
     operationResponse: any;
     date: string;
     last: boolean;
+    deleted: boolean;
     tableName: string = "UserRecord";
 
     constructor(private docClient: DocumentClient) { //should use dependency injection instead
         this.docClient = docClient;
+    }
+
+    async get(userRecordId: string): Promise<InternalResponseInterface> {
+        try {
+            const params = {
+                TableName: this.tableName,
+                Key: { id: userRecordId },
+            };
+            const { Item } = await this.docClient.get(params).promise();
+            if (!Item) {
+                return { error: true, errorTrace: "user record not found" }
+            }
+            return { error: false, response: Item as UserRecord };
+        } catch (error) {
+            return { error: true, errorTrace: error }
+        }
     }
 
     async getAllByUser(limit: number = 100, lastEvaluatedKey: string, userId: string): Promise<InternalResponsePaginatedInterface> {
@@ -134,7 +151,8 @@ export class UserRecord implements RecordInterface {
                 userBalance: this.userBalance,
                 operationResponse: this.operationResponse,
                 date: this.date,
-                last: this.last
+                last: this.last,
+                deleted: this.deleted
             };
             return params;
         } catch (error) {

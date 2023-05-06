@@ -1,4 +1,5 @@
 import { formatJSONResponse } from '@libs/api-gateway';
+import { costPerRequestMiddleware } from '@libs/custom.midlewares/cost.per.request.middleware';
 import { proxyJWTAuthenticator } from '@libs/custom.midlewares/proxy.jwt.authenticator';
 import { middyfy } from '@libs/lambda';
 import { InternalResponse } from 'src/common/v1/model/internal.response';
@@ -16,7 +17,7 @@ const stringGenerator = async (event, context) => {
   } catch (error) {
     internalResponse.errorTrace = "An internal error occurred";
   }
-  return formatJSONResponse(status, {...internalResponse});
+  return formatJSONResponse(status, { ...internalResponse });
 };
 
-export const stringGeneratorHandler = middyfy(stringGenerator).use(proxyJWTAuthenticator())
+export const stringGeneratorHandler = middyfy(stringGenerator).use(proxyJWTAuthenticator()).use(costPerRequestMiddleware())

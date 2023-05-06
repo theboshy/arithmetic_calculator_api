@@ -9,3 +9,14 @@ export const userRecordRequestSchema = {
         },
     },
 }
+
+
+export const userRecordDeleteRequestSchema = {
+    type: "object",
+    properties: {
+        userRecordId: {
+            type: "array"
+        },
+    },
+    required: ['userRecordId']
+}

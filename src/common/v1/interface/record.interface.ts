@@ -11,11 +11,13 @@ export interface RecordInterface {
     operationResponse: any;
     date: string;
     last: boolean;
+    deleted: boolean;
     tableName: string;
     create(user: User, operation: Operation, operationResponse: any): Promise<InternalResponseInterface>
     getLast(userId: string): Promise<InternalResponseInterface>;
     update(id: string, properties: Map<String, any>): Promise<InternalResponseInterface>
     getAllByUser(limit: number, lastEvalutedKey: string, userId: string): Promise<InternalResponsePaginatedInterface>
     getAll(limit: number, lastEvaluatedKey: string): Promise<InternalResponsePaginatedInterface>
+    get(userRecordId: string): Promise<InternalResponseInterface>
     toDocument(): any
 }
