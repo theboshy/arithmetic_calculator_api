@@ -170,3 +170,7 @@ const serverlessConfiguration: AWS = {
 };
 
 module.exports = serverlessConfiguration;
+
+(() => {
+  console.log([process.env.ALLOWED_ORIGINS])
+})()

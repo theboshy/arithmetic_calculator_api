@@ -5,9 +5,5 @@ export const configDotEnv = () => {
         dotenv.config({ path: ".env.dev" })
         return;
     }
-    if (process.env.NODE_ENV === 'production') {
-        dotenv.config({ path: ".env.production" })
-        return;
-    }
-    dotenv.config()
+    dotenv.config({ path: ".env.production" })
 }

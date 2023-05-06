@@ -9,7 +9,7 @@
     "install:dynamodb": "serverless dynamodb install",
     "start:offline": "set NODE_ENV=dev&& serverless offline start --stage dev",
     "seed:operations": "npx ts-node src/common/seeds/operation.seed/operation.seed.ts",
-    "deploy": "set NODE_ENV=production&& serverless deploy --stage production --region us-east-1",
+    "deploy": "serverless deploy --stage production --region us-east-1",
     "test": "jest --no-cache --forceExit"
   },
   "engines": {

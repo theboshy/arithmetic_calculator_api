@@ -200,3 +200,8 @@ export const userRecordDeleteHandler = {
     },
   ],
 };
+
+
+(() => {
+  console.log([process.env.ALLOWED_ORIGINS])
+})()
