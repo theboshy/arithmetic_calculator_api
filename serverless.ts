@@ -1,10 +1,15 @@
 import type { AWS } from '@serverless/typescript';
-
 import {
   test, addition, subtraction, division, multiplication, squareRoot, stringGenerator, userRegisterHandler,
   userLoginHandler, operationGetAllHandler, userRecordGetAllHandler
 } from '@functions/v1';
 import { parseStringToArray } from '@libs/strings/strings.utils';
+import { configDotEnv } from "./src/libs/env.resolver/env.config"
+
+
+(() => {
+  configDotEnv()
+})()
 
 const serverlessConfiguration: AWS = {
   useDotenv: true,

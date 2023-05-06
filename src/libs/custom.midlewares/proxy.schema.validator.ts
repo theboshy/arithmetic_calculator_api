@@ -15,7 +15,6 @@ export const proxySchemaValidator = (schema: any): middy.MiddlewareObj<APIGatewa
             throw new createError.BadRequest(JSON.stringify({ error: `is an invalid input`, errorTrace: validationResult.errors }));
         }
     }
-
     return {
         before
     }
