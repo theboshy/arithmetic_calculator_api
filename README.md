@@ -131,3 +131,17 @@ this token have to be sended in the headers of the operation that you want to pe
 ## TEST with POSTMAN
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1634830-5e29fd2d-ddd6-47fa-a3bd-b0070ee1e3e5?action=collection%2Ffork&collection-url=entityId%3D1634830-5e29fd2d-ddd6-47fa-a3bd-b0070ee1e3e5%26entityType%3Dcollection%26workspaceId%3D3efd7cc2-89ee-4495-94c3-44557799cbab)
+
+
+### Project structure
+
+The project code base is mainly located within the `src` folder. This folder is divided in:
+
+- `functions` - containing code base and configuration for the lambda functions
+- `libs` - containing shared code base between your lambdas (utils)
+
+### 3rd party libraries
+
+- [json-schema-to-ts](https://github.com/ThomasAribart/json-schema-to-ts) - uses JSON-Schema definitions used by API Gateway for HTTP request validation to statically generate TypeScript types in your lambda's handler code base
+- [middy](https://github.com/middyjs/middy) - middleware engine for Node.Js lambda. This template uses [http-json-body-parser](https://github.com/middyjs/middy/tree/master/packages/http-json-body-parser) to convert API Gateway `event.body` property, originally passed as a stringified JSON, to its corresponding parsed object
+- [@serverless/typescript](https://github.com/serverless/typescript) - provides up-to-date TypeScript definitions for your `serverless.ts` service file

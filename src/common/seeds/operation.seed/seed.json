@@ -1,0 +1,32 @@
+[
+    {
+        "id": "2e630e6d-7500-4017-b5b8-2750b853992f",
+        "type": "addition",
+        "cost": 2
+    },
+    {
+        "id": "cc44b18f-ccda-44d2-a8a8-7987272f480e",
+        "type": "subtraction",
+        "cost": 2
+    },
+    {
+        "id": "169346ae-3fb6-4e22-a7c1-7d7d79d565d6",
+        "type": "multiplication",
+        "cost": 3
+    },
+    {
+        "id": "ad4aab92-31e6-4e4a-b332-70e591267eba",
+        "type": "division",
+        "cost": 3
+    },
+    {
+        "id": "ec82b9f9-ef05-4bce-abf8-72046d7b7188",
+        "type": "squareRoot",
+        "cost": 4
+    },
+    {
+        "id": "399f326c-44b1-4939-8a63-9e49f20e1f4f",
+        "type": "stringGenerator",
+        "cost": 5
+    }
+]
