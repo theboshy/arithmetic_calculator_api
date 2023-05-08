@@ -7,6 +7,9 @@ Clone the Project
   git clone <project_url>
   cd <project_name>
 ```
+
+> this projects needs [Nodejs](https://nodejs.org/en) and [Typescript](https://www.typescriptlang.org)
+
 ## Install Serverless Framework
 
 ```bash
