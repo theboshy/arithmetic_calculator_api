@@ -100,10 +100,10 @@ const realationStore: Record<string, string> = {
 export const userRecordGetAllByUserService = async (username: string, limit: number = 100, lastEvaluatedKey?: string): Promise<InternalResponsePaginatedInterface> => {
     let internalResponse: InternalResponsePaginated = new InternalResponsePaginated();
     try {
-        const dynamodbConection = dynamoDBClient()
-        const user = new User(dynamodbConection)
-        const record = new UserRecord(dynamodbConection);
-        const operation = new Operation(dynamodbConection)
+        const dynamodbConnection = dynamoDBClient()
+        const user = new User(dynamodbConnection)
+        const record = new UserRecord(dynamodbConnection);
+        const operation = new Operation(dynamodbConnection)
         const userRelation = await user.get(username)
         internalResponse = await record.getAllByUser(limit, lastEvaluatedKey, userRelation.response.id);
         let responseItems;

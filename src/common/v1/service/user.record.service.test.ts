@@ -1,14 +1,21 @@
 import { v4 } from "uuid";
 import { Operation } from "../model/operation.model";
 import { User } from "../model/user.model";
-import { updatetRecord, userCreateRecordService, userGetLastRecord } from "./user.record.service";
+import {
+    updatetRecord,
+    userCreateRecordService,
+    userGetLastRecord,
+    userRecordGetAllByUserService
+} from "./user.record.service";
+import {getUser, userRegisterService} from "./user.service";
 
-const user = {
-    id: v4(),
+let user = {
+    id: "",
+    username: "mononise",
+    password: "password",
 }
 
 const operation = {
-    id: v4(),
     cost: 11,
 }
 
@@ -18,6 +25,17 @@ const operationResponse = 10;
 const balance = 198;
 
 describe("user record service", () => {
+
+    test('should register an user', async () => {
+        expect.assertions(3);
+        const result = await userRegisterService(user.username, user.password);
+        const userFROMdB = await getUser(user.username)
+        user = userFROMdB.response;
+        expect(typeof result).toBe('object')
+        expect(result.error).toBeFalsy()
+        expect(result.response).toBe(user.username)
+    });
+
     test('should create a user record', async () => {
         expect.assertions(3);
         const last = true;
@@ -35,6 +53,13 @@ describe("user record service", () => {
         expect(result.error).toBeFalsy()
         expect(typeof result.response).toBe('object')
         expect(result.response.userId).toBe(user.id)
+    });
+
+    test('should get the all the user records Exceeding the limit', async () => {
+        const result = await userRecordGetAllByUserService(user.username, 3);
+        const records = result.response;
+        expect(typeof records.items).toBe('object')
+        expect(typeof records.lastEvaluatedKey).toBe('undefined')
     });
 
     test('should get an error triying to get the last user record that does not exist', async () => {
